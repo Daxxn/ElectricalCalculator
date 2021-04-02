@@ -1,0 +1,81 @@
+﻿<UserControl x:Class="ElectricalCalculator.Views.LEDResistorView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ElectricalCalculator.Views"
+             xmlns:symbols="clr-namespace:ElectricalCalculator.Symbols"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Column="0">
+            <Grid Grid.IsSharedSizeScope="True">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition SharedSizeGroup="Labels"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock
+                    Grid.Row="0"
+                    Grid.ColumnSpan="2"
+                    Text="{Binding Path=SelectedViewTitle, FallbackValue=Test}"
+                    Style="{StaticResource SchemText}"
+                    Foreground="{StaticResource MainText}"
+                />
+            </Grid>
+        </Border>
+        
+        <Canvas x:Name="SeriesDiagram" Grid.Column="1" Background="{StaticResource SchemBackground}">
+            <symbols:PowerSource Canvas.Left="40" Canvas.Top="10"/>
+            <StackPanel Canvas.Left="70" Canvas.Top="10">
+                <TextBlock Style="{StaticResource SchemLabelText}">
+                    Vcc
+                </TextBlock>
+                <TextBox MaxLength="10" Text="{Binding Path=SeriesLED.SourceVoltage}"/>
+            </StackPanel>
+
+            <Line X1="50" Y1="65" X2="50" Y2="100"/>
+
+            <symbols:LED Canvas.Left="30" Canvas.Top="100"/>
+            <StackPanel Canvas.Left="100" Canvas.Top="100">
+                <TextBlock Style="{StaticResource SchemLabelText}">
+                    Vf
+                </TextBlock>
+                <TextBox Text="{Binding Path=SeriesLED.LED.ForwardVoltage}"/>
+                
+                <TextBlock Style="{StaticResource SchemLabelText}">
+                    Cf
+                </TextBlock>
+                <TextBlock Text="{Binding Path=SeriesLED.LED.ForwardCurrent}"/>
+            </StackPanel>
+            
+            <Line X1="50" Y1="155" X2="50" Y2="180"/>
+
+            <symbols:Resistor Canvas.Left="40" Canvas.Top="180"/>
+            
+            <Line X1="50" Y1="235" X2="50" Y2="270"/>
+
+            <symbols:Ground Canvas.Left="35" Canvas.Top="270"/>
+        </Canvas>
+
+        <Canvas
+            Visibility="Hidden"
+            x:Name="ParallelDiagram"
+            Grid.Column="1"
+            Background="{StaticResource SchemBackground}"
+        >
+            
+        </Canvas>
+    </Grid>
+</UserControl>

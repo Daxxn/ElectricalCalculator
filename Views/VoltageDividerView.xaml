@@ -1,0 +1,138 @@
+﻿<UserControl x:Class="ElectricalCalculator.Views.VoltageDividerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ElectricalCalculator.Views"
+             xmlns:symbols="clr-namespace:ElectricalCalculator.Symbols"
+             mc:Ignorable="d" x:Name="root"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Column="0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Button
+                    Command="{Binding Path=RefreshCalcCmd}"
+                    Grid.Row="0"
+                >
+                    <TextBlock Style="{StaticResource TraceDiagramText}" FontSize="14">Refresh</TextBlock>
+                </Button>
+            </Grid>
+        </Border>
+
+        <Canvas
+            x:Name="NoLoadDiagram"
+            Grid.Column="1"
+            Width="Auto"
+            Height="Auto"
+            Background="{StaticResource SchemBackground}"
+        >
+            <symbols:Resistor
+                x:Name="R1"
+                Canvas.Left="40"
+                Canvas.Top="85"
+            />
+            <StackPanel Canvas.Left="80" Canvas.Top="95">
+                <TextBlock Style="{StaticResource SchemLabelText}">
+                    R1
+                </TextBlock>
+                <TextBox
+                    Text="{Binding Path=R1}"
+                />
+            </StackPanel>
+
+            <symbols:Resistor
+                x:Name="R2"
+                Canvas.Left="40"
+                Canvas.Top="200"
+            />
+            <StackPanel Canvas.Left="80" Canvas.Top="210">
+                <TextBlock Style="{StaticResource SchemLabelText}">
+                    R2
+                </TextBlock>
+                <TextBox
+                    Text="{Binding Path=R2}"
+                />
+            </StackPanel>
+            <Line X1="50" Y1="60" X2="50" Y2="85"/>
+            <Line X1="50" Y1="140" X2="50" Y2="200"/>
+
+            <symbols:PowerSource
+                x:Name="Vcc"
+                Canvas.Left="40"
+                Canvas.Top="5"
+            />
+            <StackPanel Canvas.Left="80" Canvas.Top="15">
+                <TextBlock Style="{StaticResource SchemLabelText}">
+                    Vcc
+                </TextBlock>
+                <TextBox
+                    Text="{Binding Path=SourceVoltage}"
+                />
+            </StackPanel>
+
+            <symbols:Ground x:Name="GND" Canvas.Top="280" Canvas.Left="35"/>
+
+            <Line X1="50" Y1="280" X2="50" Y2="255"/>
+            
+            <Line X1="50" Y1="170" X2="126" Y2="170"/>
+
+            <symbols:ProbePoint
+                x:Name="DividerProbe"
+                Canvas.Left="120"
+                Canvas.Top="170"
+            />
+            <Grid Canvas.Left="140" Canvas.Top="160">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock
+                    Style="{StaticResource SchemTextBlock}"
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    ToolTip="Divider output voltage"
+                    Margin="0,0,5,0"
+                >
+                    Vo
+                </TextBlock>
+                <TextBlock
+                    Style="{StaticResource SchemTextBlock}"
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    ToolTip="Series Current Draw for this circuit"
+                    Margin="0,0,5,0"
+                >
+                    Co
+                </TextBlock>
+                <TextBlock
+                    Style="{StaticResource SchemTextBlock}"
+                    Text="{Binding Path=DividerVoltage}"
+                    Grid.Column="1"
+                    Grid.Row="0"
+                />
+                <TextBlock
+                    Style="{StaticResource SchemTextBlock}"
+                    Text="{Binding Path=CurrentDraw}"
+                    Grid.Column="1"
+                    Grid.Row="1"
+                />
+            </Grid>
+        </Canvas>
+    </Grid>
+</UserControl>

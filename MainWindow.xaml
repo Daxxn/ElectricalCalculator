@@ -1,0 +1,27 @@
+﻿<Window x:Class="ElectricalCalculator.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ElectricalCalculator"
+        xmlns:views="clr-namespace:ElectricalCalculator.Views"
+        mc:Ignorable="d" Background="{StaticResource MainBackground}"
+        Foreground="{StaticResource MainText}"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <TabControl Background="{StaticResource MainBackground}">
+            <TabItem Header="I2C Bus Resistors">
+                <views:I2CBusResistorView/>
+            </TabItem>
+            <TabItem Header="LED CL Resistor">
+                <views:LEDResistorView/>
+            </TabItem>
+            <TabItem Header="PCB Trace Cap">
+                <views:TraceCapacitanceView/>
+            </TabItem>
+            <TabItem Header="Votage Divider">
+                <views:VoltageDividerView/>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>

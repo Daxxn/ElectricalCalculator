@@ -1,0 +1,422 @@
+﻿<UserControl x:Class="ElectricalCalculator.Views.I2CBusResistorView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ElectricalCalculator.Views"
+             xmlns:conv="clr-namespace:ElectricalCalculator.Utils"
+             xmlns:models="clr-namespace:ElectricalCalculator.Models"
+             mc:Ignorable="d" 
+             d:DesignHeight="650" d:DesignWidth="1000">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <Canvas Width="1000" Style="{StaticResource I2CBusSchematic}">
+            <Rectangle
+                Canvas.Top="100"
+                Canvas.Left="50"
+                Height="50"
+                Width="80"
+            />
+            <TextBlock
+                Canvas.Top="112"
+                Canvas.Left="60"
+                Style="{StaticResource SchemText}"
+            >
+                Main IC
+            </TextBlock>
+
+            <Rectangle
+                Canvas.Top="50"
+                Canvas.Left="200"
+                Height="50"
+                Width="75"
+            />
+            <TextBlock
+                Canvas.Top="62"
+                Canvas.Left="215"
+                Style="{StaticResource SchemText}"
+            >
+                LED IC
+            </TextBlock>
+
+            <Rectangle
+                Canvas.Top="150"
+                Canvas.Left="200"
+                Height="50"
+                Width="123"
+            />
+            <TextBlock
+                Canvas.Top="162"
+                Canvas.Left="215"
+                Style="{StaticResource SchemText}"
+            >
+                    LCD Driver IC
+            </TextBlock>
+
+            <!--Master IC Lines-->
+            <Line X1="130" Y1="112" X2="160" Y2="112"/>
+            <Line X1="130" Y1="132" X2="180" Y2="132"/>
+
+            <!--Bus Lines-->
+            <Line X1="160" Y1="61" X2="160" Y2="242"/>
+            <Line X1="180" Y1="81" X2="180" Y2="272"/>
+
+            <!--LED IC Lines-->
+            <Line X1="160" Y1="62" X2="200" Y2="62"/>
+            <Line X1="180" Y1="82" X2="200" Y2="82"/>
+
+            <!--LCD Driver Lines-->
+            <Line X1="160" Y1="162" X2="200" Y2="162"/>
+            <Line X1="180" Y1="182" X2="200" Y2="182"/>
+
+            <Ellipse
+                Canvas.Left="155"
+                Canvas.Top="107"
+                Style="{StaticResource Node}"
+            />
+            <Ellipse
+                Canvas.Left="175"
+                Canvas.Top="127"
+                Style="{StaticResource Node}"
+            />
+
+            <Ellipse
+                Canvas.Left="155"
+                Canvas.Top="157"
+                Style="{StaticResource Node}"
+            />
+            <Ellipse
+                Canvas.Left="175"
+                Canvas.Top="177"
+                Style="{StaticResource Node}"
+            />
+
+            <Rectangle
+                Canvas.Left="80"
+                Canvas.Top="230"
+                Width="43"
+                Height="23"
+            />
+            <TextBlock
+                Canvas.Left="85"
+                Canvas.Top="233"
+                Style="{StaticResource SchemText}"
+                FontSize="12"
+                FontWeight="Normal"
+            >
+                R SDA
+            </TextBlock>
+
+            <Rectangle
+                Canvas.Left="80"
+                Canvas.Top="260"
+                Width="43"
+                Height="23"
+            />
+            <TextBlock
+                Canvas.Left="86"
+                Canvas.Top="263"
+                Style="{StaticResource SchemText}"
+                FontSize="12"
+                FontWeight="Normal"
+            >
+                R CLK
+            </TextBlock>
+
+            <TextBlock
+                Canvas.Left="20"
+                Canvas.Top="158"
+                Style="{StaticResource SchemLabelText}"
+            >
+                Min/Max Resistor Values
+            </TextBlock>
+            <TextBox
+                Text="{Binding
+                    Path=MaxResistanceDisplay,
+                    FallbackValue=Ohms,
+                    Mode=OneWay,
+                    UpdateSourceTrigger=PropertyChanged
+                }"
+                Style="{StaticResource SchemTextBox}"
+                FontSize="14"
+                FontWeight="DemiBold"
+                MinWidth="50"
+                MaxWidth="125"
+                Canvas.Left="20"
+                Canvas.Top="172"
+            />
+            <TextBox
+                Text="{Binding
+                    Path=MinResistanceDisplay,
+                    FallbackValue=Ohms,
+                    Mode=OneWay,
+                    UpdateSourceTrigger=PropertyChanged
+                }"
+                Style="{StaticResource SchemTextBox}"
+                FontSize="14"
+                FontWeight="DemiBold"
+                MinWidth="50"
+                MaxWidth="125"
+                Canvas.Left="20"
+                Canvas.Top="200"
+            />
+
+            <!--Resistor Lines-->
+            <Line X1="160" Y1="241" X2="123" Y2="241"/>
+            <Line X1="180" Y1="271" X2="123" Y2="271"/>
+
+            <Polygon
+                Points="55,248 40,258 55,268"
+                StrokeThickness="2"
+                Stroke="{StaticResource SchemMainShape}"
+            />
+
+            <!--Vcc Symbol Line-->
+            <Line X1="55" Y1="258" X2="65" Y2="258"/>
+            <!--Vcc Join Line-->
+            <Line X1="65" Y1="241" X2="65" Y2="271"/>
+            <!--SDA Line-->
+            <Line X1="65" Y1="241" X2="80" Y2="241"/>
+            <!--SCLK Line-->
+            <Line X1="65" Y1="271" X2="80" Y2="271"/>
+
+            <!--Vcc Pointer-->
+            <Line X1="65" Y1="271" X2="80" Y2="271"/>
+            <TextBlock
+                Canvas.Left="15"
+                Canvas.Top="285"
+                Style="{StaticResource SchemLabelText}"
+            >
+                Vcc
+            </TextBlock>
+            <TextBox
+                Text="{Binding Path=SourceVoltage}"
+                Width="50"
+                Canvas.Top="300"
+                Canvas.Left="15"
+                Style="{StaticResource SchemTextBox}"
+            />
+            <StackPanel Canvas.Top="250" Canvas.Left="200">
+                <TextBlock Style="{StaticResource SchemLabelText}">Max Current Draw</TextBlock>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock
+                        Width="50"
+                        HorizontalAlignment="Left"
+                        Background="{StaticResource SchemTextBoxColor}"
+                        Text="{Binding Path=MaxCurrentDrawDisplay}"
+                        Style="{StaticResource SchemTextBlock}"
+                    />
+                    <TextBlock Style="{StaticResource SchemUnitTypeText}">
+                        mA
+                    </TextBlock>
+                </StackPanel>
+                <TextBlock Style="{StaticResource SchemLabelText}">Min Current Draw</TextBlock>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock
+                        Width="50"
+                        HorizontalAlignment="Left"
+                        Background="{StaticResource SchemTextBoxColor}"
+                        Text="{Binding Path=MinCurrentDrawDisplay}"
+                        Style="{StaticResource SchemTextBlock}"
+                    />
+                    <TextBlock Style="{StaticResource SchemUnitTypeText}">
+                        mA
+                    </TextBlock>
+                </StackPanel>
+            </StackPanel>
+            
+        </Canvas>
+        
+        <!--#region Totals Area-->
+        <Border
+            Background="{StaticResource SchemBackground}"
+            BorderBrush="{StaticResource SchemHighlShape}"
+            Grid.Column="1"
+            BorderThickness="4"
+            Padding="10"
+        >
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Border Grid.Row="0" Margin="0,10">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Style="{StaticResource SchemLabelText}">I2C Bus Speed</TextBlock>
+                        <ComboBox
+                            Grid.Row="1"
+                            HorizontalAlignment="Left"
+                            ItemsSource="{Binding Source={conv:EnumMarkupConverter {x:Type models:I2CBusMode}}}"
+                            SelectedItem="{Binding Path=BusMode}"
+                            MinWidth="100"
+                            MaxWidth="150"
+                        />
+                    </Grid>
+                </Border>
+
+                <Border Grid.Row="1" Margin="0,10">
+                    <Grid Grid.IsSharedSizeScope="True">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition SharedSizeGroup="Label"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition SharedSizeGroup="UnitType"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Style="{StaticResource SchemLabelText}"
+                        >
+                            Bus Capacitance
+                        </TextBlock>
+                        <TextBox
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Style="{StaticResource SchemTextBox}"
+                            Text="{Binding Path=BusCapacitance}"
+                        />
+                        <TextBlock
+                            Grid.Row="0"
+                            Grid.Column="2"
+                            Style="{StaticResource SchemUnitTypeText}"
+                        >
+                            uF
+                        </TextBlock>
+
+                        <TextBlock
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Style="{StaticResource SchemLabelText}"
+                        >
+                            Rise Time
+                        </TextBlock>
+                        <TextBox
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Style="{StaticResource SchemTextBox}"
+                            Text="{Binding Path=RiseTime}"
+                        />
+                        <TextBlock
+                            Grid.Row="1"
+                            Grid.Column="2"
+                            Style="{StaticResource SchemUnitTypeText}"
+                        >
+                            ms
+                        </TextBlock>
+
+                        <TextBlock
+                            Grid.Row="2"
+                            Grid.Column="0"
+                            Style="{StaticResource SchemLabelText}"
+                        >
+                            Low Level Current
+                        </TextBlock>
+                        <TextBox
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            Style="{StaticResource SchemTextBox}"
+                            Text="{Binding Path=LowLevelCurrent}"
+                        />
+                        <TextBlock
+                            Grid.Row="2"
+                            Grid.Column="2"
+                            Style="{StaticResource SchemUnitTypeText}"
+                        >
+                            mA
+                        </TextBlock>
+
+                        <TextBlock
+                            Grid.Row="3"
+                            Grid.Column="0"
+                            Style="{StaticResource SchemLabelText}"
+                        >
+                            Low Level Votage
+                        </TextBlock>
+                        <TextBox
+                            Grid.Row="3"
+                            Grid.Column="1"
+                            Style="{StaticResource SchemTextBox}"
+                            Text="{Binding Path=LowLevelVoltage}"
+                        />
+                        <TextBlock
+                            Grid.Row="3"
+                            Grid.Column="2"
+                            Style="{StaticResource SchemUnitTypeText}"
+                        >
+                            V
+                        </TextBlock>
+                    </Grid>
+                </Border>
+
+                <Border Grid.Row="2" Margin="0,10">
+                    <Grid Grid.IsSharedSizeScope="True">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition SharedSizeGroup="Label"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition SharedSizeGroup="UnitType"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource SchemLabelText}">
+                            Best Reliability
+                        </TextBlock>
+                        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Path=MaxResistanceDisplay, Mode=OneWay}"/>
+                        <TextBlock Grid.Row="0" Grid.Column="2" Style="{StaticResource SchemUnitTypeText}">
+                            K ohms
+                        </TextBlock>
+                            
+                        <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource SchemLabelText}">
+                            Best Power Cons
+                        </TextBlock>
+                        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=MinResistanceDisplay, Mode=OneWay}"/>
+                        <TextBlock Grid.Row="1" Grid.Column="2" Style="{StaticResource SchemUnitTypeText}">
+                            K ohms
+                        </TextBlock>
+                    </Grid>
+                </Border>
+
+                <Button
+                    Grid.Row="3"
+                    Padding="0,10"
+                    Command="{Binding Path=CalcPullupCmd}"
+                >
+                    Calculate
+                </Button>
+
+                <Slider
+                    Grid.Row="4"
+                    Value="{Binding Path=Precision}"
+                    Minimum="0"
+                    Maximum="8"
+                    TickFrequency="1"
+                    IsSnapToTickEnabled="True"
+                    TickPlacement="BottomRight"
+                    AutoToolTipPlacement="TopLeft"
+                />
+            </Grid>
+        </Border>
+        <!--#endregion-->
+    </Grid>
+</UserControl>

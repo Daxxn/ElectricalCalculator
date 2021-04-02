@@ -1,0 +1,398 @@
+﻿<UserControl x:Class="ElectricalCalculator.Views.TraceCapacitanceView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ElectricalCalculator.Views"
+             xmlns:conv="clr-namespace:ElectricalCalculator.Utils"
+             xmlns:models="clr-namespace:ElectricalCalculator.Models"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="800"
+>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Canvas Width="100" Height="100" Grid.Row="0">
+            <Rectangle
+                x:Name="substrateDiagram"
+                Canvas.Left="0"
+                Canvas.Top="40"
+                Width="100"
+                Height="50"
+                RadiusX="2"
+                RadiusY="2"
+                Stroke="{x:Null}"
+                Fill="{StaticResource TraceSubstrate}"
+                Panel.ZIndex="1"
+            />
+            <Rectangle
+                x:Name="TopDiagram"
+                Canvas.Left="20"
+                Canvas.Top="31"
+                Width="60"
+                Height="10"
+                RadiusX="2"
+                RadiusY="2"
+                Stroke="{x:Null}"
+                Fill="{StaticResource TraceCopper}"
+                Panel.ZIndex="2"
+            />
+            <Rectangle
+                x:Name="bottomDiagram"
+                Canvas.Left="0"
+                Canvas.Top="90"
+                Width="100"
+                Height="10"
+                RadiusX="2"
+                RadiusY="2"
+                Stroke="{x:Null}"
+                Fill="{StaticResource TraceCopper}"
+                Panel.ZIndex="2"
+            />
+
+            <TextBlock
+                x:Name="TraceWidthDiagramText"
+                Style="{StaticResource TraceDiagramText}"
+                Canvas.Left="36"
+                Canvas.Top="8"
+            >
+                Width
+            </TextBlock>
+            <TextBlock
+                x:Name="TraceThickDiagramText"
+                Style="{StaticResource TraceDiagramText}"
+                Canvas.Left="90"
+                Canvas.Top="23"
+            >
+                Trace Thickness
+            </TextBlock>
+            <TextBlock
+                x:Name="SubsWidthDiagramText"
+                Style="{StaticResource TraceDiagramText}"
+                Canvas.Left="110"
+                Canvas.Top="50"
+            >
+                Substrate Thickness
+            </TextBlock>
+
+            <Line X1="35" Y1="26" X2="65" Y2="26" Style="{StaticResource TraceDimensionLine}"/>
+            <Line X1="35" Y1="24" X2="35" Y2="32" Style="{StaticResource TraceDimensionLine}"/>
+            <Line X1="65" Y1="24" X2="65" Y2="32" Style="{StaticResource TraceDimensionLine}"/>
+
+            <Line X1="85" Y1="32" X2="85" Y2="39" Style="{StaticResource TraceDimensionLine}"/>
+            <Line X1="80" Y1="32" X2="88" Y2="32" Style="{StaticResource TraceDimensionLine}"/>
+            <Line X1="80" Y1="39" X2="88" Y2="39" Style="{StaticResource TraceDimensionLine}"/>
+
+            <Line X1="105" Y1="41" X2="105" Y2="90" Style="{StaticResource TraceDimensionLine}"/>
+            <Line X1="100" Y1="41" X2="108" Y2="41" Style="{StaticResource TraceDimensionLine}"/>
+            <Line X1="100" Y1="90" X2="108" Y2="90" Style="{StaticResource TraceDimensionLine}"/>
+        </Canvas>
+
+        <ScrollViewer 
+            Grid.Row="1"
+            VerticalScrollBarVisibility="Visible"
+            HorizontalScrollBarVisibility="Auto"
+            
+        >
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Border Grid.Row="0">
+                    <Grid Grid.IsSharedSizeScope="True">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition SharedSizeGroup="Label"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock
+                            Style="{StaticResource TraceDescText}"
+                            Grid.Row="0"
+                            Grid.ColumnSpan="2"
+                        >
+                            PCB Dimensions
+                        </TextBlock>
+
+                        <TextBlock
+                            Style="{StaticResource TraceLabelText}"
+                            Grid.Row="1"
+                            Grid.Column="0"
+                        >
+                            Width
+                        </TextBlock>
+                        <TextBox
+                            x:Name="WidthBox"
+                            GotFocus="TraceTextBox_GotFocus"
+                            Text="{Binding Path=PCB.Width}"
+                            Grid.Row="1"
+                            Grid.Column="1"
+                        />
+
+                        <TextBlock
+                            Style="{StaticResource TraceLabelText}"
+                            Grid.Row="2"
+                            Grid.Column="0"
+                        >
+                            Substrate Thickness
+                        </TextBlock>
+                        <TextBox
+                            x:Name="SubstrateBox"
+                            GotFocus="TraceTextBox_GotFocus"
+                            Text="{Binding Path=PCB.SubstrateThickness}"
+                            Grid.Row="2"
+                            Grid.Column="1"
+                        />
+
+                        <TextBlock
+                            Style="{StaticResource TraceLabelText}"
+                            Grid.Row="3"
+                            Grid.Column="0"
+                        >
+                            Trace Thickness
+                        </TextBlock>
+                        <Grid Grid.Row="3" Grid.Column="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox
+                                x:Name="TraceThickBox"
+                                GotFocus="TraceTextBox_GotFocus"
+                                Text="{Binding Path=PCB.Thickness, UpdateSourceTrigger=PropertyChanged}"
+                                Grid.Column="0"
+                            />
+                            <ComboBox
+                                Name="StandardThicknessCombo"
+                                GotFocus="TraceTextBox_GotFocus"
+                                ItemsSource="{Binding Source={conv:EnumMarkupConverter {x:Type models:PCBThickness}}}"
+                                SelectedItem="{Binding Path=PCB.StandardThickness, UpdateSourceTrigger=PropertyChanged}"
+                                Grid.Column="1"
+                            />
+                        </Grid>
+
+                        <TextBlock
+                            Style="{StaticResource TraceLabelText}"
+                            Grid.Row="4"
+                            Grid.Column="0"
+                        >
+                            Trace Length
+                        </TextBlock>
+                        <TextBox
+                            Text="{Binding Path=PCB.TraceLength}"
+                            Grid.Row="4"
+                            Grid.Column="1"
+                        />
+
+                        <TextBlock
+                            Style="{StaticResource TraceDescText}"
+                            Grid.Row="5"
+                            Grid.ColumnSpan="2"
+                        >
+                            Other PCB Attributes
+                        </TextBlock>
+
+                        <TextBlock
+                            Style="{StaticResource TraceLabelText}"
+                            Grid.Row="6"
+                            Grid.Column="0"
+                        >
+                            Load Capacitance
+                        </TextBlock>
+                        <TextBox
+                            Text="{Binding Path=PCB.LoadCapacitance}"
+                            Grid.Row="6"
+                            Grid.Column="1"
+                        />
+
+                        <TextBlock
+                            Style="{StaticResource TraceLabelText}"
+                            Grid.Row="7"
+                            Grid.ColumnSpan="2"
+                        >
+                            Relative Dialectric
+                        </TextBlock>
+                        <Slider
+                            Grid.Row="8"
+                            Grid.ColumnSpan="2"
+                            Value="{Binding Path=PCB.RelativeDialectricPermiability}"
+                            Minimum="3.5"
+                            Maximum="5.5"
+                            TickFrequency="0.1"
+                            TickPlacement="BottomRight"
+                            IsMoveToPointEnabled="True"
+                            IsSnapToTickEnabled="True"
+                        />
+                        <CheckBox
+                            Margin="10,0,0,0"
+                            Grid.Row="9"
+                            Grid.ColumnSpan="2"
+                            IsChecked="{Binding Path=PCB.DistributedCapacitiveLoads}"
+                        >
+                            <TextBlock
+                                Style="{StaticResource TraceLabelText}"
+                            >
+                                Are there distributed capacitive loads?
+                            </TextBlock>
+                        </CheckBox>
+                    </Grid>
+                </Border>
+
+                <Button
+                    Command="{Binding Path=RunCalculationCmd}"
+                    Padding="10"
+                    MaxWidth="200"
+                    Grid.Row="1"
+                >
+                    <TextBlock
+                        Style="{StaticResource TraceLabelText}"
+                        FontSize="14"
+                        FontWeight="DemiBold"
+                    >
+                        Calculate
+                    </TextBlock>
+                </Button>
+
+                <Border Grid.Row="2">
+                    <Grid Grid.IsSharedSizeScope="True">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition SharedSizeGroup="Label"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock
+                            Style="{StaticResource TraceDescText}"
+                            Grid.Row="0"
+                            Grid.Column="0"
+                        >
+                            Characteristic Impedance
+                        </TextBlock>
+                        <TextBlock
+                            Style="{StaticResource TraceResultText}"
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Text="{Binding Path=PCB.CharacteristicImpedance}"
+                        />
+
+                        <TextBlock
+                            Style="{StaticResource TraceDescText}"
+                            Grid.Row="1"
+                            Grid.Column="0"
+                        >
+                            Capacitance/Length
+                        </TextBlock>
+                        <TextBlock
+                            Style="{StaticResource TraceResultText}"
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Text="{Binding Path=PCB.CapacitancePerLength}"
+                        />
+
+                        <TextBlock
+                            Style="{StaticResource TraceDescText}"
+                            Grid.Row="2"
+                            Grid.Column="0"
+                        >
+                            Propagation Delay
+                        </TextBlock>
+                        <TextBlock
+                            Style="{StaticResource TraceResultText}"
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            Text="{Binding Path=PCB.PropagationDelay}"
+                        />
+
+                        <TextBlock
+                            Style="{StaticResource TraceDescText}"
+                            Grid.Row="3"
+                            Grid.Column="0"
+                        >
+                            Inductance/Length
+                        </TextBlock>
+                        <TextBlock
+                            Style="{StaticResource TraceResultText}"
+                            Grid.Row="3"
+                            Grid.Column="1"
+                            Text="{Binding Path=PCB.InductancePerLength}"
+                        />
+
+                        <Separator Grid.Row="4" Grid.ColumnSpan="2"/>
+
+                        <TextBlock
+                            Style="{StaticResource TraceDescText}"
+                            Grid.Row="5"
+                            Grid.Column="0"
+                        >
+                            Effective Characteristsic Impedance
+                        </TextBlock>
+                        <TextBlock
+                            Style="{StaticResource TraceResultText}"
+                            Grid.Row="5"
+                            Grid.Column="1"
+                            Text="{Binding Path=PCB.EffectiveCharacteristsicImpedance}"
+                        />
+
+                        <TextBlock
+                            Style="{StaticResource TraceDescText}"
+                            Grid.Row="6"
+                            Grid.Column="0"
+                        >
+                            Effective Propagation Delay
+                        </TextBlock>
+                        <TextBlock
+                            Style="{StaticResource TraceResultText}"
+                            Grid.Row="6"
+                            Grid.Column="1"
+                            Text="{Binding Path=PCB.EffectivePropagationDelay}"
+                        />
+
+                        <Separator Grid.ColumnSpan="2" Grid.Row="7"/>
+
+                        <TextBlock
+                            Style="{StaticResource TraceDescText}"
+                            Grid.Row="8"
+                            Grid.Column="0"
+                        >
+                            Total Line Capacitance
+                        </TextBlock>
+                        <TextBlock
+                            Style="{StaticResource TraceResultText}"
+                            Grid.Row="8"
+                            Grid.Column="1"
+                            Text="{Binding Path=PCB.TotalCapacitance}"
+                        />
+                    </Grid>
+                </Border>
+            </Grid>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

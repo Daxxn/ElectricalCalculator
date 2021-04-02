@@ -1,0 +1,25 @@
+﻿<UserControl x:Class="ElectricalCalculator.Symbols.ProbePoint"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ElectricalCalculator.Symbols"
+             mc:Ignorable="d" Background="{x:Null}"
+             d:DesignHeight="30" d:DesignWidth="10">
+    <UserControl.Resources>
+        <Style TargetType="Line">
+            <Setter Property="Stroke" Value="{StaticResource SchemMainShape}"/>
+            <Setter Property="StrokeEndLineCap" Value="Round"/>
+            <Setter Property="StrokeStartLineCap" Value="Round"/>
+            <Setter Property="StrokeThickness" Value="2.5"/>
+        </Style>
+    </UserControl.Resources>
+    <Canvas
+        x:Name="Symbol"
+        Width="Auto"
+        Height="Auto"
+    >
+        <Line X1="5" Y1="0" X2="5" Y2="20" StrokeStartLineCap="Flat"/>
+        <Ellipse Width="10" Height="10" Canvas.Left="0" Canvas.Top="20" Fill="{StaticResource SchemHighlShape}"/>
+    </Canvas>
+</UserControl>
