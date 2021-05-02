@@ -14,7 +14,9 @@ namespace ElectricalCalculator.Models
 
       private double _width;
       private double _substrateThickness;
-      private double _thickness;
+      private double _thickness = Constants.TypicalPCBThicknesses[PCBThickness.TopBottom];
+
+      private PCBThickness _standardThickness;
 
       private double _traceLength;
 
@@ -28,7 +30,7 @@ namespace ElectricalCalculator.Models
       #region - Methods
       public void CalcCapacitance()
       {
-         TotalCapacitance = Constants.MetricConstant * RelativeDialectricPermiability * (TraceLength + 0.8 * Thickness) / SubstrateThickness;
+         TotalCapacitance = Constants.MetricConstant * RelativeDialectricPermiability * (TraceLength * Math.Pow(10, -4) + 0.8 * Thickness * Math.Pow(10, -4)) / SubstrateThickness * Math.Pow(10, -4);
       }
       #endregion
 
@@ -59,6 +61,17 @@ namespace ElectricalCalculator.Models
          set
          {
             _thickness = value;
+            OnPropertyChanged();
+         }
+      }
+
+      public PCBThickness StandardThickness
+      {
+         get { return _standardThickness; }
+         set
+         {
+            _standardThickness = value;
+            Thickness = Constants.TypicalPCBThicknesses[value];
             OnPropertyChanged();
          }
       }

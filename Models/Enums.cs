@@ -34,4 +34,56 @@ namespace ElectricalCalculator.Models
       Left,
       Right,
    }
+
+   public enum ResistorColors
+   {
+      Black,
+      Brown,
+      Red,
+      Orange,
+      Yellow,
+      Green,
+      Blue,
+      Violet,
+      Grey,
+      White,
+      Gold = -1,
+      Silver = -2
+   }
+
+   public enum ResistorBandType
+   {
+      [Description("4 Band")]
+      FourBand,
+      [Description("5 Band")]
+      FiveBand,
+      [Description("6 Band")]
+      SixBand,
+   }
+
+   public enum SMPSType
+   {
+      [Description("Step Up")]
+      StepUp,
+      [Description("Step Down")]
+      StepDown,
+      [Description("Voltage Inverter")]
+      VoltInvert
+   }
+
+   public enum DiodeType
+   {
+      [Description("Logic")]
+      Logic,
+      [Description("Normal")]
+      Normal,
+      [Description("Schottky")]
+      Schottky,
+      [Description("Rectifier")]
+      Rectifier,
+      [Description("Fast Recovery")]
+      FastRecovery,
+      [Description("Switching")]
+      Switching
+   }
 }

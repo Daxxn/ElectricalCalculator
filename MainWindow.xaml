@@ -22,6 +22,9 @@
             <TabItem Header="Votage Divider">
                 <views:VoltageDividerView/>
             </TabItem>
+            <TabItem Header="Switching PWR Supply">
+                <views:BoostBuckConverterView/>
+            </TabItem>
         </TabControl>
     </Grid>
 </Window>

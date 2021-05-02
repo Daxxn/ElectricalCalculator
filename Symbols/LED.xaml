@@ -8,14 +8,14 @@
              d:DesignHeight="55" d:DesignWidth="65">
     <UserControl.Resources>
         <Style TargetType="Line">
-            <Setter Property="Stroke" Value="{StaticResource SchemMainShape}"/>
+            <Setter Property="Stroke" Value="{StaticResource SchemNetColor}"/>
             <Setter Property="StrokeEndLineCap" Value="Round"/>
             <Setter Property="StrokeStartLineCap" Value="Round"/>
             <Setter Property="StrokeThickness" Value="2.5"/>
         </Style>
 
         <Style TargetType="Path">
-            <Setter Property="Stroke" Value="{StaticResource SchemHighlShape}"/>
+            <Setter Property="Stroke" Value="{StaticResource SchemNetColor}"/>
             <Setter Property="StrokeThickness" Value="2"/>
             <Setter Property="StrokeLineJoin" Value="Round"/>
             <Setter Property="StrokeStartLineCap" Value="Round"/>
@@ -25,8 +25,8 @@
     <Canvas>
         <Line X1="20" Y1="0" X2="20" Y2="20" StrokeStartLineCap="Flat"/>
         <Line X1="20" Y1="35" X2="20" Y2="55" StrokeEndLineCap="Flat"/>
-        <Polygon Points="5,20 35,20 20,35" Fill="{StaticResource SchemHighlShape}" StrokeThickness="3" Stroke="{StaticResource SchemHighlShape}" StrokeLineJoin="Round"/>
-        <Line X1="5" Y1="35" X2="35" Y2="35" Stroke="{StaticResource SchemHighlShape}"/>
+        <Polygon Points="5,20 35,20 20,35" Fill="{StaticResource SchemNetColor}" StrokeThickness="3" Stroke="{StaticResource SchemNetColor}" StrokeLineJoin="Round"/>
+        <Line X1="5" Y1="35" X2="35" Y2="35" Stroke="{StaticResource SchemNetColor}"/>
 
         <Path Data="M 0,-1.5 15,11 10.5,14 19,20" Canvas.Left="42" Canvas.Top="20"/>
         <Path Data="M -2,-1.8 8.5,6.5 4,10 15,18" Canvas.Left="42" Canvas.Top="24"/>

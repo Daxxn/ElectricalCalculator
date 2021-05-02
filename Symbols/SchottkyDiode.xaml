@@ -1,0 +1,32 @@
+﻿<UserControl x:Class="ElectricalCalculator.Symbols.SchottkyDiode"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ElectricalCalculator.Symbols"
+             mc:Ignorable="d" 
+             Width="20" Height="40">
+    <UserControl.Resources>
+        <!--<Style TargetType="Line">
+            <Setter Property="Stroke" Value="{StaticResource SchemMainShape}"/>
+            <Setter Property="StrokeEndLineCap" Value="Round"/>
+            <Setter Property="StrokeStartLineCap" Value="Round"/>
+            <Setter Property="StrokeThickness" Value="2.5"/>
+        </Style>-->
+
+        <!--<Style TargetType="Path">
+            <Setter Property="Stroke" Value="{StaticResource SchemHighlShape}"/>
+            <Setter Property="StrokeThickness" Value="2"/>
+            <Setter Property="StrokeLineJoin" Value="Round"/>
+            <Setter Property="StrokeStartLineCap" Value="Round"/>
+            <Setter Property="StrokeEndLineCap" Value="Round"/>
+        </Style>-->
+    </UserControl.Resources>
+    <Canvas>
+        <Line X1="10" Y1="0" X2="10" Y2="20" StrokeStartLineCap="Flat"/>
+        <Line X1="10" Y1="40" X2="10" Y2="27" StrokeEndLineCap="Flat"/>
+        <Polygon Points="0,15 20,15 10,28" Fill="{StaticResource SchemNetColor}" StrokeThickness="1" Stroke="{StaticResource SchemNetColor}" StrokeLineJoin="Round"/>
+        <!--<Line X1="0" Y1="28" X2="20" Y2="28" Stroke="{StaticResource SchemNetColor}"/>-->
+        <Path Data="M 4,31 0,31 0,28 20,28 20,25 16,25" Stroke="{StaticResource SchemNetColor}" StrokeThickness="2"/>
+    </Canvas>
+</UserControl>

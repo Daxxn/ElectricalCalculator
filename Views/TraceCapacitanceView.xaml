@@ -239,6 +239,8 @@
                             TickPlacement="BottomRight"
                             IsMoveToPointEnabled="True"
                             IsSnapToTickEnabled="True"
+                            AutoToolTipPlacement="TopLeft"
+                            AutoToolTipPrecision="1"
                         />
                         <CheckBox
                             Margin="10,0,0,0"
