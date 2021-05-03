@@ -10,7 +10,7 @@ namespace ElectricalCalculator.Models
    public class SMPSModel : Model
    {
       #region - Fields & Properties
-      private SMPSVariables _inputVariables;
+      private SMPSVariables _inputVariables = new();
 
       private double _Ton;
       private double _Toff;
@@ -18,7 +18,7 @@ namespace ElectricalCalculator.Models
       private double _IpkSw;
       private double _switchingFreq;
 
-      private SMPSResult _result;
+      private SMPSResult _result = new();
       #endregion
 
       #region - Constructors
@@ -26,51 +26,52 @@ namespace ElectricalCalculator.Models
       #endregion
 
       #region - Methods
-      public void Calc()
+      public void Calc(double defaultTolerance, SMPSType type)
       {
-         CalcTOnDivTOff();
+         InputVars.CalcTolerances(defaultTolerance);
+         CalcTOnDivTOff(type);
          CalcTOnPlusTOff();
          CalcTOff();
          CalcTOn();
          CalcTimingCap();
-         CalcPeakSwitchingCurrent();
+         CalcPeakSwitchingCurrent(type);
          CalcSenseResistor();
-         CalcMainInductor();
-         CalcFilterCap();
-         CalcFeedbackResistor();
+         CalcMainInductor(type);
+         CalcFilterCap(type);
+         CalcFeedbackResistor(type);
       }
 
-      private void CalcTOnDivTOff()
+      private void CalcTOnDivTOff(SMPSType type)
       {
-         if (InputVars.SupplyType == SMPSType.VoltInvert)
+         if (type == SMPSType.VoltInvert)
          {
             TOnDivTOff =
-               Math.Abs(InputVars.OutputVoltageNominal) + InputVars.SelectedDiode.ForwardVoltage
+               (Math.Abs(InputVars.OutputVoltageNominal) + InputVars.SelectedDiode.ForwardVoltage)
                         /
-               InputVars.InputVoltageNominal - InputVars.SwitchSaturationVoltage;
+               (InputVars.InputVoltageNominal - InputVars.SwitchSaturationVoltage);
          }
-         else if (InputVars.SupplyType == SMPSType.StepUp)
+         else if (type == SMPSType.StepUp)
          {
             TOnDivTOff =
-               (InputVars.OutputVoltageNominal + InputVars.OutputVoltageRipple - InputVars.InputVoltageMin)
+               (InputVars.OutputVoltageNominal + (InputVars.SelectedDiode.ForwardVoltage - InputVars.InputVoltageMin))
                         /
-               InputVars.InputVoltageMin - InputVars.SwitchSaturationVoltage;
+               (InputVars.InputVoltageMin - InputVars.SwitchSaturationVoltage);
          }
          else
          {
             TOnDivTOff =
-               InputVars.OutputVoltageNominal + InputVars.SelectedDiode.ForwardVoltage
+               (InputVars.OutputVoltageNominal + InputVars.SelectedDiode.ForwardVoltage)
                         /
-               InputVars.InputVoltageMin - InputVars.SwitchSaturationVoltage - InputVars.OutputVoltageNominal;
+               (InputVars.InputVoltageMin - InputVars.SwitchSaturationVoltage - InputVars.OutputVoltageNominal);
          }
       }
 
-      public void CalcFeedbackResistor()
+      private void CalcFeedbackResistor(SMPSType type)
       {
-         Result.FBResistor2 = InputVars.OutputVoltageNominal / (InputVars.SupplyType == SMPSType.VoltInvert ? -1.25 : 1.25) - 1 * InputVars.FBResistor1;
+         Result.FBResistor2D.FullValue = ((InputVars.OutputVoltageNominal / (type == SMPSType.VoltInvert ? -1.25 : 1.25)) - 1) * InputVars.FBResistor1;
       }
 
-      public void CalcTOnPlusTOff()
+      private void CalcTOnPlusTOff()
       {
          TOnPlusTOff = 1 / InputVars.DesiredSwFrequency;
       }
@@ -87,12 +88,12 @@ namespace ElectricalCalculator.Models
 
       private void CalcTimingCap()
       {
-         Result.TimingCapacitor = 4 * Math.Pow(10, -5) * TOn;
+         Result.TimingCapacitorD.FullValue = 4 * Math.Pow(10, -5) * TOn;
       }
 
-      private void CalcPeakSwitchingCurrent()
+      private void CalcPeakSwitchingCurrent(SMPSType type)
       {
-         if (InputVars.SupplyType == SMPSType.StepDown)
+         if (type == SMPSType.StepDown)
          {
             PeakSwitchOutputCurrent = 2 * InputVars.OutputCurrentMax;
          }
@@ -104,24 +105,24 @@ namespace ElectricalCalculator.Models
 
       private void CalcSenseResistor()
       {
-         Result.SenseResistor = 0.3 / PeakSwitchOutputCurrent;
+         Result.SenseResistorD.FullValue = 0.3 / PeakSwitchOutputCurrent;
       }
 
-      private void CalcMainInductor()
+      private void CalcMainInductor(SMPSType type)
       {
-         Result.MainInductor =
-            ((InputVars.InputVoltageMin - InputVars.SwitchSaturationVoltage - (InputVars.SupplyType == SMPSType.StepDown ? InputVars.OutputVoltageNominal : 0))
+         Result.MainInductorD.FullValue =
+            ((InputVars.InputVoltageMin - InputVars.SwitchSaturationVoltage - (type == SMPSType.StepDown ? InputVars.OutputVoltageNominal : 0))
                      /
             PeakSwitchOutputCurrent) * TOn;
       }
 
-      private void CalcFilterCap()
+      private void CalcFilterCap(SMPSType type)
       {
-         if (InputVars.SupplyType == SMPSType.StepDown)
+         if (type == SMPSType.StepDown)
          {
-            Result.OutputCapacitor = PeakSwitchOutputCurrent * TOnPlusTOff / 8 * InputVars.OutputVoltageRipple;
+            Result.OutputCapacitorD.FullValue = PeakSwitchOutputCurrent * TOnPlusTOff / 8 * InputVars.OutputVoltageRipple;
          }
-         Result.OutputCapacitor = 9 * (InputVars.OutputCurrent * TOn) / InputVars.OutputVoltageRipple;
+         Result.OutputCapacitorD.FullValue = 9 * (InputVars.OutputCurrent * TOn) / InputVars.OutputVoltageRipple;
       }
       #endregion
 

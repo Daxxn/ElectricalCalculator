@@ -8,7 +8,7 @@
              d:DesignHeight="40" d:DesignWidth="30">
     <UserControl.Resources>
         <Style TargetType="Line">
-            <Setter Property="Stroke" Value="{StaticResource SchemMainShape}"/>
+            <Setter Property="Stroke" Value="{StaticResource SchemNetColor}"/>
             <Setter Property="StrokeEndLineCap" Value="Round"/>
             <Setter Property="StrokeStartLineCap" Value="Round"/>
             <Setter Property="StrokeThickness" Value="2.5"/>

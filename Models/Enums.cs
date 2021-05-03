@@ -19,6 +19,7 @@ namespace ElectricalCalculator.Models
       FastPlus = 2
    }
 
+   [TypeConverter(typeof(EnumDescriptionConverter))]
    public enum PCBThickness
    {
       [Description("Top/Bottom Layers")]
@@ -51,6 +52,7 @@ namespace ElectricalCalculator.Models
       Silver = -2
    }
 
+   [TypeConverter(typeof(EnumDescriptionConverter))]
    public enum ResistorBandType
    {
       [Description("4 Band")]
@@ -61,6 +63,7 @@ namespace ElectricalCalculator.Models
       SixBand,
    }
 
+   [TypeConverter(typeof(EnumDescriptionConverter))]
    public enum SMPSType
    {
       [Description("Step Up")]
@@ -71,6 +74,7 @@ namespace ElectricalCalculator.Models
       VoltInvert
    }
 
+   [TypeConverter(typeof(EnumDescriptionConverter))]
    public enum DiodeType
    {
       [Description("Logic")]

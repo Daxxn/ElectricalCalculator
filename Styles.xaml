@@ -36,6 +36,11 @@
         <Setter Property="Foreground" Value="{StaticResource MainText}"/>
     </Style>
 
+    <Style TargetType="TextBox" x:Key="TextBoxBase">
+        <Setter Property="Background" Value="{StaticResource TraceBackground}"/>
+        <Setter Property="Foreground" Value="{StaticResource MainText}"/>
+    </Style>
+
     <Style TargetType="Rectangle">
         <Setter Property="Stroke" Value="{StaticResource SchemMainShape}"/>
         <Setter Property="StrokeThickness" Value="4"/>
@@ -53,13 +58,18 @@
 
     <Style TargetType="Line">
         <Setter Property="Stroke" Value="{StaticResource SchemNetColor}"/>
-        <Setter Property="StrokeThickness" Value="2"/>
+        <Setter Property="StrokeThickness" Value="2.5"/>
     </Style>
 
-    <Style TargetType="Ellipse" x:Key="Node">
+    <Style TargetType="Path">
+        <Setter Property="Stroke" Value="{StaticResource SchemNetColor}"/>
+        <Setter Property="StrokeThickness" Value="2.5"/>
+    </Style>
+
+    <Style TargetType="Ellipse">
         <Setter Property="Fill" Value="{StaticResource SchemNetColor}"/>
-        <Setter Property="Width" Value="10"/>
-        <Setter Property="Height" Value="10"/>
+        <Setter Property="Width" Value="8"/>
+        <Setter Property="Height" Value="8"/>
         <Setter Property="StrokeThickness" Value="0"/>
     </Style>
 

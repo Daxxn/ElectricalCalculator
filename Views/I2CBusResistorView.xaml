@@ -77,23 +77,19 @@
             <Ellipse
                 Canvas.Left="155"
                 Canvas.Top="107"
-                Style="{StaticResource Node}"
             />
             <Ellipse
                 Canvas.Left="175"
                 Canvas.Top="127"
-                Style="{StaticResource Node}"
             />
 
             <Ellipse
                 Canvas.Left="155"
                 Canvas.Top="157"
-                Style="{StaticResource Node}"
             />
             <Ellipse
                 Canvas.Left="175"
                 Canvas.Top="177"
-                Style="{StaticResource Node}"
             />
 
             <Rectangle

@@ -1,0 +1,20 @@
+﻿<UserControl x:Class="ElectricalCalculator.Symbols.NPNTransistor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ElectricalCalculator.Symbols"
+             mc:Ignorable="d" 
+             Width="40" Height="40">
+    <Canvas Width="Auto" Height="Auto">
+        <Path Data="M 40,0 40,5 20,12.5" Stroke="{StaticResource SchemNetColor}"/>
+        <Line X1="20" Y1="5" X2="20" Y2="35"/>
+        <Line X1="0" Y1="20" X2="20" Y2="20"/>
+        <Path Data="M 20,27.5 40,35 40,40" Stroke="{StaticResource SchemNetColor}"/>
+        <Polygon Points="0,0 7,4 0,8" Fill="{StaticResource SchemNetColor}" RenderTransformOrigin="0.5,0.5" Canvas.Left="28" Canvas.Top="28">
+            <Polygon.RenderTransform>
+                <RotateTransform Angle="19"/>
+            </Polygon.RenderTransform>
+        </Polygon>
+    </Canvas>
+</UserControl>

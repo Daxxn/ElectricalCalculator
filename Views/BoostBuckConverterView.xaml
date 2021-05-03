@@ -5,38 +5,147 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ElectricalCalculator.Views"
              xmlns:symbols="clr-namespace:ElectricalCalculator.Symbols"
+             xmlns:conv="clr-namespace:ElectricalCalculator.Utils"
+             xmlns:models="clr-namespace:ElectricalCalculator.Models"
+             xmlns:metric="clr-namespace:CustomDataTypeLibrary;assembly=CustomDataTypeLibrary"
              mc:Ignorable="d" Background="{StaticResource SchemBackground}"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
-        <Style TargetType="Path">
-            <Setter Property="StrokeThickness" Value="2"/>
-            <Setter Property="Stroke" Value="{StaticResource SchemMainShape}"/>
+        <conv:UnitDisplayConverter x:Key="metricConvert" />
+        <Style TargetType="TextBox" BasedOn="{StaticResource TextBoxBase}">
+            <EventSetter Event="GotFocus" Handler="TextBox_TextChanged"/>
         </Style>
     </UserControl.Resources>
+    <UserControl.InputBindings>
+        <KeyBinding Command="{Binding Path=CalcCmd}" Key="Return" Modifiers="Shift"/>
+    </UserControl.InputBindings>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-        <Canvas x:Name="StepUpDiagram" Width="Auto" Height="Auto" Grid.Column="0">
-            <symbols:Ground Canvas.Left="80" Canvas.Top="400"/>
-            <symbols:Ground Canvas.Left="30" Canvas.Top="300"/>
-            <symbols:Ground Canvas.Left="400" Canvas.Top="400"/>
-            <symbols:Inductor Canvas.Left="280" Canvas.Top="20">
+        <ComboBox
+            ItemsSource="{Binding Source={conv:EnumMarkupConverter {x:Type models:SMPSType}}}"
+            SelectedItem="{Binding Path=SelectedType}"
+            Grid.ColumnSpan="2"
+            Grid.Row="0"
+            Grid.Column="0"
+        />
+
+        <!--Step Up Diagram-->
+        <Canvas
+            x:Name="StepUpDiagram"
+            Width="Auto"
+            Height="Auto"
+            Grid.Column="0"
+            Grid.Row="1"
+            Margin="0,-21,0,21"
+        >
+            <Canvas.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Foreground" Value="{StaticResource SchemNetColor}"/>
+                    <Setter Property="FontWeight" Value="Bold"/>
+                </Style>
+            </Canvas.Resources>
+            <!--#region Diagram Layout -->
+            <symbols:Ground Canvas.Left="90" Canvas.Top="415">
+                <symbols:Ground.RenderTransform>
+                    <RotateTransform Angle="90"/>
+                </symbols:Ground.RenderTransform>
+            </symbols:Ground>
+            <symbols:Ground Canvas.Left="30" Canvas.Top="310"/>
+            <symbols:Ground Canvas.Left="480" Canvas.Top="454" Width="10" Height="10">
+                <symbols:Ground.RenderTransform>
+                    <RotateTransform Angle="270"/>
+                </symbols:Ground.RenderTransform>
+            </symbols:Ground>
+            <symbols:Inductor Canvas.Left="280" Canvas.Top="40">
                 <symbols:Inductor.RenderTransform>
                     <RotateTransform Angle="90"/>
                 </symbols:Inductor.RenderTransform>
             </symbols:Inductor>
-            <symbols:Resistor Canvas.Left="115" Canvas.Top="108">
+            <symbols:Resistor Canvas.Left="115" Canvas.Top="107.5">
                 <symbols:Resistor.RenderTransform>
                     <RotateTransform Angle="90"/>
                 </symbols:Resistor.RenderTransform>
             </symbols:Resistor>
-            <symbols:Capacitor Canvas.Left="35" Canvas.Top="255"/>
-            <symbols:SchottkyDiode Canvas.Left="460" Canvas.Top="200"/>
-
-            <Canvas x:Name="Chip" Canvas.Left="150" Canvas.Top="85">
+            <symbols:Resistor Canvas.Left="35" Canvas.Top="190"/>
+            <symbols:Capacitor Canvas.Left="35" Canvas.Top="270"/>
+            <symbols:Capacitor Canvas.Left="470" Canvas.Top="380"/>
+            <symbols:SchottkyDiode Canvas.Left="470" Canvas.Top="200"/>
+            <symbols:ProbePoint Canvas.Left="30" Canvas.Top="242.5">
+                <symbols:ProbePoint.RenderTransform>
+                    <RotateTransform Angle="90"/>
+                </symbols:ProbePoint.RenderTransform>
+            </symbols:ProbePoint>
+            <Line X1="30" Y1="247.5" X2="45" Y2="247.5"/>
+            <Line X1="45" Y1="240" X2="45" Y2="270"/>
+            <Ellipse Canvas.Left="41" Canvas.Top="243.5"/>
+            <Line X1="45" Y1="60" X2="45" Y2="190"/>
+            <Ellipse Canvas.Left="41" Canvas.Top="178.5"/>
+            <Line X1="45" Y1="182.5" X2="130" Y2="182.5"/>
+            <Line X1="43.75" Y1="60" X2="225" Y2="60"/>
+            <Line X1="280" Y1="60" X2="480" Y2="60"/>
+            <Ellipse Canvas.Left="41" Canvas.Top="113.5"/>
+            <Line X1="44" Y1="117.5" X2="60" Y2="117.5"/>
+            <Line X1="110" Y1="117.5" X2="130" Y2="117.5"/>
+            <Line X1="480" Y1="58.75" X2="480" Y2="200"/>
+            <Line X1="45" Y1="247.5" X2="130" Y2="247.5"/>
+            <symbols:Resistor Canvas.Left="80" Canvas.Top="370"/>
+            <symbols:Resistor Canvas.Left="160" Canvas.Top="360">
+                <symbols:Resistor.RenderTransform>
+                    <RotateTransform Angle="90"/>
+                </symbols:Resistor.RenderTransform>
+            </symbols:Resistor>
+            <Line X1="90" Y1="313" X2="90" Y2="370"/>
+            <Line X1="90" Y1="370" X2="110" Y2="370"/>
+            <Line X1="90" Y1="420" X2="90" Y2="431.25"/>
+            <Line X1="88.75" Y1="312.5" X2="130" Y2="312.5"/>
+            <Line X1="160" Y1="370" X2="480" Y2="370"/>
+            <Line X1="480" Y1="240" X2="480" Y2="380"/>
+            <Line X1="480" Y1="420" X2="480" Y2="440.25"/>
+            <Ellipse Canvas.Left="476" Canvas.Top="113.5"/>
+            <Line X1="390" Y1="117.5" X2="480" Y2="117.5"/>
+            <Ellipse Canvas.Left="476" Canvas.Top="366"/>
+            <symbols:ProbePoint Canvas.Left="480" Canvas.Top="375">
+                <symbols:ProbePoint.RenderTransform>
+                    <RotateTransform Angle="270"/>
+                </symbols:ProbePoint.RenderTransform>
+            </symbols:ProbePoint>
+            <Ellipse Canvas.Left="86" Canvas.Top="366"/>
+            <symbols:Ground Canvas.Left="400" Canvas.Top="182" Height="10" Width="10"/>
+            <Line X1="415" Y1="246.25" X2="415" Y2="265"/>
+            <symbols:Capacitor Canvas.Left="405" Canvas.Top="260"/>
+            <Line X1="390" Y1="247.5" X2="415" Y2="247.5"/>
+            <Line X1="415" Y1="300" X2="415" Y2="312"/>
+            <Line X1="390" Y1="182.5" X2="416.25" Y2="182.5"/>
+            <symbols:Ground Canvas.Left="400" Canvas.Top="311.25" Height="10" Width="10"/>
+            <Line X1="390" Y1="312.5" X2="416" Y2="312.5"/>
+            <Canvas Canvas.Left="150" Canvas.Top="85">
+                <Canvas.Resources>
+                    <Style TargetType="Rectangle">
+                        <Setter Property="Stroke" Value="{StaticResource SchemNetColor}"/>
+                        <Setter Property="StrokeThickness" Value="2"/>
+                    </Style>
+                    <Style TargetType="Polygon">
+                        <Setter Property="Stroke" Value="{StaticResource SchemNetColor}"/>
+                        <Setter Property="StrokeThickness" Value="2"/>
+                    </Style>
+                    <Style TargetType="Polyline">
+                        <Setter Property="Stroke" Value="{StaticResource SchemNetColor}"/>
+                        <Setter Property="StrokeThickness" Value="2"/>
+                    </Style>
+                    <Style TargetType="TextBlock" BasedOn="{StaticResource SchemLabelText}">
+                        <Setter Property="Foreground" Value="{StaticResource SchemNetColor}"/>
+                        <Setter Property="FontWeight" Value="Bold"/>
+                    </Style>
+                </Canvas.Resources>
+                <!--#region Chip Legs -->
                 <Path Data="M 0,0 220,0 220,260 0,260 0,0"/>
                 <TextBlock Style="{StaticResource SchemLabelText}" Canvas.Left="-8" Canvas.Top="18" FontSize="10">8</TextBlock>
                 <Line X1="-20" Y1="32.5" X2="0" Y2="32.5"/>
@@ -46,7 +155,7 @@
                 <Line X1="-20" Y1="162.5" X2="0" Y2="162.5"/>
                 <TextBlock Style="{StaticResource SchemLabelText}" Canvas.Left="-8" Canvas.Top="213" FontSize="10">5</TextBlock>
                 <Line X1="-20" Y1="227.5" X2="0" Y2="227.5"/>
-                
+
                 <TextBlock Style="{StaticResource SchemLabelText}" Canvas.Left="222" Canvas.Top="18" FontSize="10">1</TextBlock>
                 <Line X1="240" Y1="32.5" X2="220" Y2="32.5"/>
                 <TextBlock Style="{StaticResource SchemLabelText}" Canvas.Left="222" Canvas.Top="83" FontSize="10">2</TextBlock>
@@ -55,19 +164,869 @@
                 <Line X1="240" Y1="162.5" X2="220" Y2="162.5"/>
                 <TextBlock Style="{StaticResource SchemLabelText}" Canvas.Left="222" Canvas.Top="213" FontSize="10">4</TextBlock>
                 <Line X1="240" Y1="227.5" X2="220" Y2="227.5"/>
+                <!--#endregion-->
+
+                <Rectangle Canvas.Left="82" Canvas.Top="35" Width="40" Height="60"/>
+                <Rectangle Canvas.Left="121" Canvas.Top="164" Width="60" Height="40"/>
+                <Polyline Points="0,20 35,0 35,40 0,20" Canvas.Left="40" Canvas.Top="170"/>
+                <Path Data="M 0,228 100,228 100,200 75,200"/>
+                <Line X1="75" Y1="180" X2="122" Y2="180"/>
+                <Path Data="M 220,227.5 150,227.5 150,204"/>
+                <Path Data="M 40,190 20,190 20,42.5 45,42.5"/>
+                <Path Data="M -1,0 L 20,0 A 1,1 180 0 1 20,20 L 0,20 L 0,0" Canvas.Left="45" Canvas.Top="38" StrokeThickness="2"/>
+                <Line X1="75" Y1="47.5" X2="82.5" Y2="47.5"/>
+                <Rectangle Width="60" Height="40" Canvas.Left="35" Canvas.Top="114"/>
+                <Path Data="M 0,97.5 45,97.5 45,115"/>
+                <Path Data="M 65,115 65,80 35,80 35,53.5 45,53.5"/>
+                <Line X1="65" Y1="80" X2="75" Y2="80"/>
+                <Ellipse Canvas.Left="61" Canvas.Top="76"/>
+                <Ellipse Width="10" Height="10" Stroke="{StaticResource SchemNetColor}" StrokeThickness="2.5" Fill="{x:Null}" Canvas.Left="74" Canvas.Top="75"/>
+                <symbols:NPNTransistor Canvas.Left="121" Canvas.Top="28"/>
+                <symbols:NPNTransistor Canvas.Left="160" Canvas.Top="56"/>
+                <Line X1="161" Y1="68" X2="161" Y2="77.25"/>
+                <Path Data="M 0,32.5 25,32.5 25,20 161,20 161,29"/>
+                <Ellipse Canvas.Left="157" Canvas.Top="72"/>
+                <symbols:Resistor Canvas.Left="156" Canvas.Top="80">
+                    <symbols:Resistor.RenderTransform>
+                        <ScaleTransform ScaleX="0.5" ScaleY="0.5"/>
+                    </symbols:Resistor.RenderTransform>
+                </symbols:Resistor>
+                <Path Data="M 220,32.5 200,32.5 200,56"/>
+                <Path Data="M 220,97.5 200,97.5 200,94"/>
+                <Path Data="M 200,97.5 200,107 160.375,107"/>
+                <Ellipse Canvas.Left="196" Canvas.Top="93.5"/>
+                <Path Data="M 94,135 200,135 200,162.5 220,162.5"/>
+
+                <TextBlock Canvas.Left="66" Canvas.Top="171">+</TextBlock>
+                <TextBlock Canvas.Left="68" Canvas.Top="191">-</TextBlock>
+                <TextBlock Canvas.Left="38" Canvas.Top="116">Ipk</TextBlock>
+                <TextBlock Canvas.Left="79" Canvas.Top="127">Ct</TextBlock>
+                <TextBlock Canvas.Left="126" Canvas.Top="169">
+                    <Run>1.25v Ref</Run>
+                    <LineBreak/>
+                    <Run>Regulator</Run>
+                </TextBlock>
+                <TextBlock Canvas.Left="5" Canvas.Top="208">FB</TextBlock>
+                <TextBlock Canvas.Left="2" Canvas.Top="151" FontSize="10">Vcc</TextBlock>
             </Canvas>
+            <!--#endregion-->
+
+            <TextBlock Canvas.Left="73" Canvas.Top="87">180 Ω</TextBlock>
+            <TextBlock Canvas.Left="65" Canvas.Top="194">Rsc</TextBlock>
+            <TextBlock Canvas.Left="65" Canvas.Top="217" MinWidth="50" HorizontalAlignment="Left" Style="{StaticResource SchemTextBlock}">
+                <Run Text="{Binding Path=Model.Result.SenseResistorD.RoundedValue, Mode=OneWay}"/>
+                <Run
+                    Text="{Binding
+                        Path=Model.Result.SenseResistorD.Prefix,
+                        Converter={StaticResource metricConvert},
+                        Mode=OneWay,
+                        ConverterParameter=Model.Result.SenseResistorD.Prefix
+                    }"
+                />
+                <Run>Ω</Run>
+            </TextBlock>
+            <TextBlock Canvas.Left="60" Canvas.Top="282" MinWidth="50">
+                100F
+            </TextBlock>
+            <TextBlock Canvas.Left="128" Canvas.Top="341">R2</TextBlock>
+            <TextBlock Canvas.Left="60" Canvas.Top="387">R1</TextBlock>
+            <TextBox Canvas.Left="64" Canvas.Top="366" HorizontalAlignment="Right" Text="{Binding Path=Model.InputVars.FBResistor1D.Value}"/>
+            <TextBlock Canvas.Left="129" Canvas.Top="385" Style="{StaticResource SchemTextBlock}">
+                <Run Text="{Binding Path=Model.Result.FBResistor2D.RoundedValue, Mode=OneWay}"/>
+                <Run
+                    Text="{Binding
+                        Path=Model.Result.SenseResistorD.Prefix,
+                        Converter={StaticResource metricConvert},
+                        Mode=OneWay,
+                        ConverterParameter=Model.Result.SenseResistorD.Prefix
+                    }"
+                />
+                <Run>Ω</Run>
+            </TextBlock>
+            <TextBlock Canvas.Left="495" Canvas.Top="378">Co</TextBlock>
+            <TextBlock Canvas.Left="495" Canvas.Top="398" HorizontalAlignment="Left" Style="{StaticResource SchemTextBlock}">
+                <Run Text="{Binding Path=Model.Result.OutputCapacitorD.RoundedValue, Mode=OneWay}"/>
+                <Run
+                    Text="{Binding
+                        Path=Model.Result.OutputCapacitorD.Prefix,
+                        Converter={StaticResource metricConvert},
+                        Mode=OneWay,
+                        ConverterParameter=Model.Result.OutputCapacitorD.Prefix
+                    }"
+                />
+                <Run>F</Run>
+            </TextBlock>
+            <TextBox Canvas.Left="495" Canvas.Top="200" Text="{Binding Path=Model.InputVars.SelectedDiode.PartNumber}"/>
+            <TextBox Canvas.Left="495" Canvas.Top="225" Text="{Binding Path=Model.InputVars.SelectedDiode.ForwardVoltageD.Value}"/>
+            <TextBlock Canvas.Left="430" Canvas.Top="261">Ct</TextBlock>
+            <TextBlock Canvas.Left="430" Canvas.Top="282" HorizontalAlignment="Left" Style="{StaticResource SchemTextBlock}">
+                <Run Text="{Binding Path=Model.Result.TimingCapacitorD.RoundedValue, Mode=OneWay}"/>
+                <Run
+                    Text="{Binding
+                        Path=Model.Result.TimingCapacitorD.Prefix,
+                        Converter={StaticResource metricConvert},
+                        Mode=OneWay,
+                        ConverterParameter=Model.Result.TimingCapacitorD.Prefix
+                    }"
+                />
+                <Run>F</Run>
+            </TextBlock>
+            <TextBlock Canvas.Left="250" Canvas.Top="23">L</TextBlock>
+            <TextBlock Canvas.Left="243" Canvas.Top="63" HorizontalAlignment="Center" Style="{StaticResource SchemTextBlock}">
+                <Run Text="{Binding Path=Model.Result.MainInductorD.RoundedValue, Mode=OneWay}"/>
+                <Run
+                    Text="{Binding
+                        Path=Model.Result.MainInductorD.Prefix,
+                        Converter={StaticResource metricConvert},
+                        Mode=OneWay,
+                        ConverterParameter=Model.Result.MainInductorD.Prefix
+                    }"
+                />
+                <Run>H</Run>
+            </TextBlock>
+            <TextBlock Canvas.Left="4" Canvas.Top="197">Vin</TextBlock>
+            <TextBox Canvas.Left="4" Canvas.Top="218" Text="{Binding Path=Model.InputVars.InputVoltageNominalD.Value}">
+                <TextBox.ContextMenu>
+                    <ContextMenu>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="50"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Column="0" Grid.Row="0">Min</TextBlock>
+                            <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding Path=Model.InputVars.InputVoltageMinD.Value}"/>
+                            <TextBlock Grid.Column="0" Grid.Row="1">Max</TextBlock>
+                            <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Path=Model.InputVars.InputVoltageMaxD.Value}"/>
+                        </Grid>
+                    </ContextMenu>
+                </TextBox.ContextMenu>
+            </TextBox>
+            <TextBlock Canvas.Left="497" Canvas.Top="318">Vout</TextBlock>
+            <TextBox Canvas.Left="497" Canvas.Top="339" Text="{Binding Path=Model.InputVars.OutputVoltageNominalD.Value}">
+                <TextBox.ContextMenu>
+                    <ContextMenu>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="50"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Column="0" Grid.Row="0">Min</TextBlock>
+                            <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding Path=Model.InputVars.OutputVoltageMinD.Value}"/>
+                            <TextBlock Grid.Column="0" Grid.Row="1">Max</TextBlock>
+                            <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Path=Model.InputVars.OutputVoltageMaxD.Value}"/>
+                        </Grid>
+                    </ContextMenu>
+                </TextBox.ContextMenu>
+            </TextBox>
+            <Button Command="{Binding Path=CalcCmd}" Canvas.Left="250" Canvas.Bottom="0" Padding="20,5">Calc</Button>
         </Canvas>
 
-        <Border Grid.Column="1">
+        <!--Step Down Diagram-->
+        <Canvas
+            x:Name="StepDownDiagram"
+            Width="Auto"
+            Height="Auto"
+            Grid.Column="0"
+            Grid.Row="1"
+            Margin="0,-21,0,21"
+        >
+            <Canvas.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Foreground" Value="{StaticResource SchemNetColor}"/>
+                    <Setter Property="FontWeight" Value="Bold"/>
+                </Style>
+            </Canvas.Resources>
+            <!--#region Diagram Layout -->
+            <symbols:Ground Canvas.Left="90" Canvas.Top="415">
+                <symbols:Ground.RenderTransform>
+                    <RotateTransform Angle="90"/>
+                </symbols:Ground.RenderTransform>
+            </symbols:Ground>
+            <symbols:Ground Canvas.Left="30" Canvas.Top="310"/>
+            <symbols:Ground Canvas.Left="480" Canvas.Top="454" Width="10" Height="10">
+                <symbols:Ground.RenderTransform>
+                    <RotateTransform Angle="270"/>
+                </symbols:Ground.RenderTransform>
+            </symbols:Ground>
+            <symbols:Inductor Canvas.Left="500" Canvas.Top="300">
+                <symbols:Inductor.RenderTransform>
+                    <RotateTransform Angle="180"/>
+                </symbols:Inductor.RenderTransform>
+            </symbols:Inductor>
+            <symbols:Resistor Canvas.Left="35" Canvas.Top="190"/>
+            <symbols:Capacitor Canvas.Left="35" Canvas.Top="270"/>
+            <symbols:Capacitor Canvas.Left="470" Canvas.Top="380"/>
+            <symbols:SchottkyDiode Canvas.Left="456" Canvas.Top="223">
+                <symbols:SchottkyDiode.RenderTransform>
+                    <RotateTransform Angle="180"/>
+                </symbols:SchottkyDiode.RenderTransform>
+            </symbols:SchottkyDiode>
+            <symbols:ProbePoint Canvas.Left="30" Canvas.Top="242.5">
+                <symbols:ProbePoint.RenderTransform>
+                    <RotateTransform Angle="90"/>
+                </symbols:ProbePoint.RenderTransform>
+            </symbols:ProbePoint>
+            <Line X1="30" Y1="247.5" X2="45" Y2="247.5"/>
+            <Line X1="45" Y1="240" X2="45" Y2="270"/>
+            <Ellipse Canvas.Left="41" Canvas.Top="243.5"/>
+            <Line X1="45" Y1="60" X2="45" Y2="190"/>
+            <Ellipse Canvas.Left="41" Canvas.Top="178.5"/>
+            <Line X1="45" Y1="182.5" X2="130" Y2="182.5"/>
+            <Line X1="43.75" Y1="60" X2="390" Y2="60"/>
+            <Ellipse Canvas.Left="41" Canvas.Top="113.5"/>
+            <Line X1="44" Y1="117.5" X2="130" Y2="117.5"/>
+            <Line X1="390" Y1="58.75" X2="390" Y2="118.75"/>
+            <Line X1="45" Y1="247.5" X2="130" Y2="247.5"/>
+            <symbols:Resistor Canvas.Left="80" Canvas.Top="370"/>
+            <symbols:Resistor Canvas.Left="160" Canvas.Top="360">
+                <symbols:Resistor.RenderTransform>
+                    <RotateTransform Angle="90"/>
+                </symbols:Resistor.RenderTransform>
+            </symbols:Resistor>
+            <Line X1="90" Y1="313" X2="90" Y2="370"/>
+            <Line X1="90" Y1="370" X2="110" Y2="370"/>
+            <Line X1="90" Y1="420" X2="90" Y2="431.25"/>
+            <Line X1="88.75" Y1="312.5" X2="130" Y2="312.5"/>
+            <Line X1="160" Y1="370" X2="480" Y2="370"/>
+            <Line X1="480" Y1="300" X2="480" Y2="380"/>
+            <Line X1="480" Y1="420" X2="480" Y2="440.25"/>
+            <Ellipse Canvas.Left="442" Canvas.Top="178.5"/>
+            <Ellipse Canvas.Left="476" Canvas.Top="366"/>
+            <symbols:ProbePoint Canvas.Left="480" Canvas.Top="375">
+                <symbols:ProbePoint.RenderTransform>
+                    <RotateTransform Angle="270"/>
+                </symbols:ProbePoint.RenderTransform>
+            </symbols:ProbePoint>
+            <Ellipse Canvas.Left="86" Canvas.Top="366"/>
+            <Line X1="415" Y1="246.25" X2="415" Y2="265"/>
+            <symbols:Capacitor Canvas.Left="405" Canvas.Top="260"/>
+            <Line X1="390" Y1="247.5" X2="415" Y2="247.5"/>
+            <Line X1="415" Y1="300" X2="415" Y2="312"/>
+            <Line X1="390" Y1="182.5" X2="481.25" Y2="182.5"/>
+            <symbols:Ground Canvas.Left="400" Canvas.Top="311.25" Height="10" Width="10"/>
+            <Line X1="390" Y1="312.5" X2="416" Y2="312.5"/>
+            <Line X1="480" Y1="182" X2="480" Y2="245"/>
+            <symbols:Ground Canvas.Left="431" Canvas.Top="215" Height="10" Width="10"/>
+
+            <Canvas Canvas.Left="150" Canvas.Top="85">
+                <Canvas.Resources>
+                    <Style TargetType="Rectangle">
+                        <Setter Property="Stroke" Value="{StaticResource SchemNetColor}"/>
+                        <Setter Property="StrokeThickness" Value="2"/>
+                    </Style>
+                    <Style TargetType="Polygon">
+                        <Setter Property="Stroke" Value="{StaticResource SchemNetColor}"/>
+                        <Setter Property="StrokeThickness" Value="2"/>
+                    </Style>
+                    <Style TargetType="Polyline">
+                        <Setter Property="Stroke" Value="{StaticResource SchemNetColor}"/>
+                        <Setter Property="StrokeThickness" Value="2"/>
+                    </Style>
+                    <Style TargetType="TextBlock" BasedOn="{StaticResource SchemLabelText}">
+                        <Setter Property="Foreground" Value="{StaticResource SchemNetColor}"/>
+                        <Setter Property="FontWeight" Value="Bold"/>
+                    </Style>
+                </Canvas.Resources>
+                <Path Data="M 0,0 220,0 220,260 0,260 0,0"/>
+                <TextBlock Style="{StaticResource SchemLabelText}" Canvas.Left="-8" Canvas.Top="18" FontSize="10">8</TextBlock>
+                <Line X1="-20" Y1="32.5" X2="0" Y2="32.5"/>
+                <TextBlock Style="{StaticResource SchemLabelText}" Canvas.Left="-8" Canvas.Top="83" FontSize="10">7</TextBlock>
+                <Line X1="-20" Y1="97.5" X2="0" Y2="97.5"/>
+                <TextBlock Style="{StaticResource SchemLabelText}" Canvas.Left="-8" Canvas.Top="148" FontSize="10">6</TextBlock>
+                <Line X1="-20" Y1="162.5" X2="0" Y2="162.5"/>
+                <TextBlock Style="{StaticResource SchemLabelText}" Canvas.Left="-8" Canvas.Top="213" FontSize="10">5</TextBlock>
+                <Line X1="-20" Y1="227.5" X2="0" Y2="227.5"/>
+
+                <TextBlock Style="{StaticResource SchemLabelText}" Canvas.Left="222" Canvas.Top="18" FontSize="10">1</TextBlock>
+                <Line X1="240" Y1="32.5" X2="220" Y2="32.5"/>
+                <TextBlock Style="{StaticResource SchemLabelText}" Canvas.Left="222" Canvas.Top="83" FontSize="10">2</TextBlock>
+                <Line X1="240" Y1="97.5" X2="220" Y2="97.5"/>
+                <TextBlock Style="{StaticResource SchemLabelText}" Canvas.Left="222" Canvas.Top="148" FontSize="10">3</TextBlock>
+                <Line X1="240" Y1="162.5" X2="220" Y2="162.5"/>
+                <TextBlock Style="{StaticResource SchemLabelText}" Canvas.Left="222" Canvas.Top="213" FontSize="10">4</TextBlock>
+                <Line X1="240" Y1="227.5" X2="220" Y2="227.5"/>
+
+                <Rectangle Canvas.Left="82" Canvas.Top="35" Width="40" Height="60"/>
+                <Rectangle Canvas.Left="121" Canvas.Top="164" Width="60" Height="40"/>
+                <Polyline Points="0,20 35,0 35,40 0,20" Canvas.Left="40" Canvas.Top="170"/>
+                <Path Data="M 0,228 100,228 100,200 75,200"/>
+                <Line X1="75" Y1="180" X2="122" Y2="180"/>
+                <Path Data="M 220,227.5 150,227.5 150,204"/>
+                <Path Data="M 40,190 20,190 20,42.5 45,42.5"/>
+                <Path Data="M -1,0 L 20,0 A 1,1 180 0 1 20,20 L 0,20 L 0,0" Canvas.Left="45" Canvas.Top="38" StrokeThickness="2"/>
+                <Line X1="75" Y1="47.5" X2="82.5" Y2="47.5"/>
+                <Rectangle Width="60" Height="40" Canvas.Left="35" Canvas.Top="114"/>
+                <Path Data="M 0,97.5 45,97.5 45,115"/>
+                <Path Data="M 65,115 65,80 35,80 35,53.5 45,53.5"/>
+                <Line X1="65" Y1="80" X2="75" Y2="80"/>
+                <Ellipse Canvas.Left="61" Canvas.Top="76"/>
+                <Ellipse Width="10" Height="10" Stroke="{StaticResource SchemNetColor}" StrokeThickness="2.5" Fill="{x:Null}" Canvas.Left="74" Canvas.Top="75"/>
+                <symbols:NPNTransistor Canvas.Left="121" Canvas.Top="28"/>
+                <symbols:NPNTransistor Canvas.Left="160" Canvas.Top="56"/>
+                <Line X1="161" Y1="68" X2="161" Y2="77.25"/>
+                <Path Data="M 0,32.5 25,32.5 25,20 161,20 161,29"/>
+                <Ellipse Canvas.Left="157" Canvas.Top="72"/>
+                <symbols:Resistor Canvas.Left="156" Canvas.Top="80">
+                    <symbols:Resistor.RenderTransform>
+                        <ScaleTransform ScaleX="0.5" ScaleY="0.5"/>
+                    </symbols:Resistor.RenderTransform>
+                </symbols:Resistor>
+                <Path Data="M 220,32.5 200,32.5 200,56"/>
+                <Path Data="M 220,97.5 200,97.5 200,94"/>
+                <Path Data="M 200,97.5 200,107 160.375,107"/>
+                <Ellipse Canvas.Left="196" Canvas.Top="93.5"/>
+                <Path Data="M 94,135 200,135 200,162.5 220,162.5"/>
+
+                <TextBlock Canvas.Left="66" Canvas.Top="171">+</TextBlock>
+                <TextBlock Canvas.Left="68" Canvas.Top="191">-</TextBlock>
+                <TextBlock Canvas.Left="38" Canvas.Top="116">Ipk</TextBlock>
+                <TextBlock Canvas.Left="79" Canvas.Top="127">Ct</TextBlock>
+                <TextBlock Canvas.Left="126" Canvas.Top="169">
+                    <Run>1.25v Ref</Run>
+                    <LineBreak/>
+                    <Run>Regulator</Run>
+                </TextBlock>
+                <TextBlock Canvas.Left="5" Canvas.Top="208">FB</TextBlock>
+                <TextBlock Canvas.Left="2" Canvas.Top="151" FontSize="10">Vcc</TextBlock>
+            </Canvas>
+            <!--#endregion-->
+
+            <TextBlock Canvas.Left="65" Canvas.Top="194">Rsc</TextBlock>
+            <TextBlock Canvas.Left="65" Canvas.Top="217" MinWidth="50" HorizontalAlignment="Left" Style="{StaticResource SchemTextBlock}">
+                <Run Text="{Binding Path=Model.Result.SenseResistorD.RoundedValue, Mode=OneWay}"/>
+                <Run
+                    Text="{Binding
+                        Path=Model.Result.SenseResistorD.Prefix,
+                        Converter={StaticResource metricConvert},
+                        Mode=OneWay,
+                        ConverterParameter=Model.Result.SenseResistorD.Prefix
+                    }"
+                />
+                <Run>Ω</Run>
+            </TextBlock>
+            <TextBlock Canvas.Left="60" Canvas.Top="282" MinWidth="50">
+                100F
+            </TextBlock>
+            <TextBlock Canvas.Left="128" Canvas.Top="341">R2</TextBlock>
+            <TextBlock Canvas.Left="60" Canvas.Top="387">R1</TextBlock>
+            <TextBox Canvas.Left="64" Canvas.Top="366" HorizontalAlignment="Right" Text="{Binding Path=Model.InputVars.FBResistor1D.Value}"/>
+            <TextBlock Canvas.Left="129" Canvas.Top="385" Style="{StaticResource SchemTextBlock}">
+                <Run Text="{Binding Path=Model.Result.FBResistor2D.RoundedValue, Mode=OneWay}"/>
+                <Run
+                    Text="{Binding
+                        Path=Model.Result.FBResistor2D.Prefix,
+                        Converter={StaticResource metricConvert},
+                        Mode=OneWay,
+                        ConverterParameter=Model.Result.FBResistor2D.Prefix
+                    }"
+                />
+                <Run>Ω</Run>
+            </TextBlock>
+            <TextBlock Canvas.Left="495" Canvas.Top="378">Co</TextBlock>
+            <TextBlock Canvas.Left="495" Canvas.Top="398" HorizontalAlignment="Left" Style="{StaticResource SchemTextBlock}">
+                <Run Text="{Binding Path=Model.Result.OutputCapacitorD.RoundedValue, Mode=OneWay}"/>
+                <Run
+                    Text="{Binding
+                        Path=Model.Result.OutputCapacitorD.Prefix,
+                        Converter={StaticResource metricConvert},
+                        Mode=OneWay,
+                        ConverterParameter=Model.Result.OutputCapacitorD.Prefix
+                    }"
+                />
+                <Run>F</Run>
+            </TextBlock>
+            <TextBox Canvas.Left="461" Canvas.Top="188" Text="{Binding Path=Model.InputVars.SelectedDiode.PartNumber}"/>
+            <TextBox Canvas.Left="461" Canvas.Top="209" Text="{Binding Path=Model.InputVars.SelectedDiode.ForwardVoltageD.Value}"/>
+            <TextBlock Canvas.Left="430" Canvas.Top="261">Ct</TextBlock>
+            <TextBlock Canvas.Left="430" Canvas.Top="282" HorizontalAlignment="Left" Style="{StaticResource SchemTextBlock}">
+                <Run Text="{Binding Path=Model.Result.TimingCapacitorD.RoundedValue, Mode=OneWay}"/>
+                <Run
+                    Text="{Binding
+                        Path=Model.Result.TimingCapacitorD.Prefix,
+                        Converter={StaticResource metricConvert},
+                        Mode=OneWay,
+                        ConverterParameter=Model.Result.TimingCapacitorD.Prefix
+                    }"
+                />
+                <Run>F</Run>
+            </TextBlock>
+            <TextBlock Canvas.Left="506" Canvas.Top="256">L</TextBlock>
+            <TextBlock Canvas.Left="506" Canvas.Top="277" Style="{StaticResource SchemTextBlock}">
+                <Run Text="{Binding Path=Model.Result.MainInductorD.RoundedValue, Mode=OneWay}"/>
+                <Run
+                    Text="{Binding
+                        Path=Model.Result.MainInductorD.Prefix,
+                        Converter={StaticResource metricConvert},
+                        Mode=OneWay,
+                        ConverterParameter=Model.Result.MainInductorD.Prefix
+                    }"
+                />
+                <Run>H</Run>
+            </TextBlock>
+            <TextBlock Canvas.Left="4" Canvas.Top="197">Vin</TextBlock>
+            <TextBox Canvas.Left="4" Canvas.Top="218" Text="{Binding Path=Model.InputVars.InputVoltageNominalD.Value}">
+                <TextBox.ContextMenu>
+                    <ContextMenu>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="50"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Column="0" Grid.Row="0">Min</TextBlock>
+                            <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding Path=Model.InputVars.InputVoltageMinD.Value}"/>
+                            <TextBlock Grid.Column="0" Grid.Row="1">Max</TextBlock>
+                            <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Path=Model.InputVars.InputVoltageMaxD.Value}"/>
+                        </Grid>
+                    </ContextMenu>
+                </TextBox.ContextMenu>
+            </TextBox>
+            <TextBlock Canvas.Left="497" Canvas.Top="318">Vout</TextBlock>
+            <TextBox Canvas.Left="497" Canvas.Top="339" Text="{Binding Path=Model.InputVars.OutputVoltageNominalD.Value}">
+                <TextBox.ContextMenu>
+                    <ContextMenu>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="50"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Column="0" Grid.Row="0">Min</TextBlock>
+                            <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding Path=Model.InputVars.OutputVoltageMinD.Value}"/>
+                            <TextBlock Grid.Column="0" Grid.Row="1">Max</TextBlock>
+                            <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Path=Model.InputVars.OutputVoltageMaxD.Value}"/>
+                        </Grid>
+                    </ContextMenu>
+                </TextBox.ContextMenu>
+            </TextBox>
+            <Button Command="{Binding Path=CalcCmd}" Canvas.Left="250" Canvas.Bottom="0" Padding="20,5">Calc</Button>
+        </Canvas>
+
+        <!--Voltage Inverter Diagram-->
+        <Canvas
+            x:Name="VoltInvertDiagram"
+            Width="Auto"
+            Height="Auto"
+            Grid.Column="0"
+            Grid.Row="1"
+            Margin="0,-21,0,21"
+        >
+            <Canvas.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Foreground" Value="{StaticResource SchemNetColor}"/>
+                    <Setter Property="FontWeight" Value="Bold"/>
+                </Style>
+            </Canvas.Resources>
+            <!--#region Diagram Layout -->
+            <symbols:Ground Canvas.Left="90" Canvas.Top="415">
+                <symbols:Ground.RenderTransform>
+                    <RotateTransform Angle="90"/>
+                </symbols:Ground.RenderTransform>
+            </symbols:Ground>
+            <symbols:Ground Canvas.Left="30" Canvas.Top="310"/>
+            <symbols:Ground Canvas.Left="480" Canvas.Top="454" Width="10" Height="10">
+                <symbols:Ground.RenderTransform>
+                    <RotateTransform Angle="270"/>
+                </symbols:Ground.RenderTransform>
+            </symbols:Ground>
+            <symbols:Inductor Canvas.Left="466" Canvas.Top="238">
+                <symbols:Inductor.RenderTransform>
+                    <RotateTransform Angle="180"/>
+                </symbols:Inductor.RenderTransform>
+            </symbols:Inductor>
+            <symbols:Resistor Canvas.Left="35" Canvas.Top="190"/>
+            <symbols:Capacitor Canvas.Left="35" Canvas.Top="270"/>
+            <symbols:Capacitor Canvas.Left="470" Canvas.Top="380"/>
+            <symbols:SchottkyDiode Canvas.Left="490" Canvas.Top="284">
+                <symbols:SchottkyDiode.RenderTransform>
+                    <RotateTransform Angle="180"/>
+                </symbols:SchottkyDiode.RenderTransform>
+            </symbols:SchottkyDiode>
+            <symbols:ProbePoint Canvas.Left="30" Canvas.Top="242.5">
+                <symbols:ProbePoint.RenderTransform>
+                    <RotateTransform Angle="90"/>
+                </symbols:ProbePoint.RenderTransform>
+            </symbols:ProbePoint>
+            <Line X1="30" Y1="247.5" X2="45" Y2="247.5"/>
+            <Line X1="45" Y1="240" X2="45" Y2="270"/>
+            <Ellipse Canvas.Left="41" Canvas.Top="243.5"/>
+            <Line X1="45" Y1="60" X2="45" Y2="190"/>
+            <Ellipse Canvas.Left="41" Canvas.Top="178.5"/>
+            <Line X1="45" Y1="182.5" X2="130" Y2="182.5"/>
+            <Line X1="43.75" Y1="60" X2="390" Y2="60"/>
+            <Ellipse Canvas.Left="41" Canvas.Top="113.5"/>
+            <Line X1="44" Y1="117.5" X2="130" Y2="117.5"/>
+            <Line X1="390" Y1="58.75" X2="390" Y2="118.75"/>
+            <Line X1="45" Y1="247.5" X2="130" Y2="247.5"/>
+            <symbols:Resistor Canvas.Left="80" Canvas.Top="370"/>
+            <symbols:Resistor Canvas.Left="160" Canvas.Top="360">
+                <symbols:Resistor.RenderTransform>
+                    <RotateTransform Angle="90"/>
+                </symbols:Resistor.RenderTransform>
+            </symbols:Resistor>
+            <Line X1="90" Y1="313" X2="90" Y2="370"/>
+            <Line X1="90" Y1="370" X2="110" Y2="370"/>
+            <Line X1="90" Y1="420" X2="90" Y2="431.25"/>
+            <Line X1="88.75" Y1="312.5" X2="130" Y2="312.5"/>
+            <Line X1="160" Y1="370" X2="480" Y2="370"/>
+            <Line X1="480" Y1="280" X2="480" Y2="380"/>
+            <Line X1="480" Y1="420" X2="480" Y2="440.25"/>
+            <Ellipse Canvas.Left="442" Canvas.Top="178.5"/>
+            <Ellipse Canvas.Left="476" Canvas.Top="366"/>
+            <symbols:ProbePoint Canvas.Left="480" Canvas.Top="375">
+                <symbols:ProbePoint.RenderTransform>
+                    <RotateTransform Angle="270"/>
+                </symbols:ProbePoint.RenderTransform>
+            </symbols:ProbePoint>
+            <Ellipse Canvas.Left="86" Canvas.Top="366"/>
+            <Line X1="415" Y1="246.25" X2="415" Y2="265"/>
+            <symbols:Capacitor Canvas.Left="405" Canvas.Top="260"/>
+            <Line X1="390" Y1="247.5" X2="415" Y2="247.5"/>
+            <Line X1="415" Y1="300" X2="415" Y2="312"/>
+            <Line X1="390" Y1="182.5" X2="481.25" Y2="182.5"/>
+            <symbols:Ground Canvas.Left="400" Canvas.Top="311.25" Height="10" Width="10"/>
+            <Line X1="390" Y1="312.5" X2="416" Y2="312.5"/>
+            <Line X1="480" Y1="182" X2="480" Y2="245"/>
+            <symbols:Ground Canvas.Left="431" Canvas.Top="230" Height="10" Width="10"/>
+
+            <Canvas Canvas.Left="150" Canvas.Top="85">
+                <Canvas.Resources>
+                    <Style TargetType="Rectangle">
+                        <Setter Property="Stroke" Value="{StaticResource SchemNetColor}"/>
+                        <Setter Property="StrokeThickness" Value="2"/>
+                    </Style>
+                    <Style TargetType="Polygon">
+                        <Setter Property="Stroke" Value="{StaticResource SchemNetColor}"/>
+                        <Setter Property="StrokeThickness" Value="2"/>
+                    </Style>
+                    <Style TargetType="Polyline">
+                        <Setter Property="Stroke" Value="{StaticResource SchemNetColor}"/>
+                        <Setter Property="StrokeThickness" Value="2"/>
+                    </Style>
+                    <Style TargetType="TextBlock" BasedOn="{StaticResource SchemLabelText}">
+                        <Setter Property="Foreground" Value="{StaticResource SchemNetColor}"/>
+                        <Setter Property="FontWeight" Value="Bold"/>
+                    </Style>
+                </Canvas.Resources>
+                <Path Data="M 0,0 220,0 220,260 0,260 0,0"/>
+                <TextBlock Style="{StaticResource SchemLabelText}" Canvas.Left="-8" Canvas.Top="18" FontSize="10">8</TextBlock>
+                <Line X1="-20" Y1="32.5" X2="0" Y2="32.5"/>
+                <TextBlock Style="{StaticResource SchemLabelText}" Canvas.Left="-8" Canvas.Top="83" FontSize="10">7</TextBlock>
+                <Line X1="-20" Y1="97.5" X2="0" Y2="97.5"/>
+                <TextBlock Style="{StaticResource SchemLabelText}" Canvas.Left="-8" Canvas.Top="148" FontSize="10">6</TextBlock>
+                <Line X1="-20" Y1="162.5" X2="0" Y2="162.5"/>
+                <TextBlock Style="{StaticResource SchemLabelText}" Canvas.Left="-8" Canvas.Top="213" FontSize="10">5</TextBlock>
+                <Line X1="-20" Y1="227.5" X2="0" Y2="227.5"/>
+
+                <TextBlock Style="{StaticResource SchemLabelText}" Canvas.Left="222" Canvas.Top="18" FontSize="10">1</TextBlock>
+                <Line X1="240" Y1="32.5" X2="220" Y2="32.5"/>
+                <TextBlock Style="{StaticResource SchemLabelText}" Canvas.Left="222" Canvas.Top="83" FontSize="10">2</TextBlock>
+                <Line X1="240" Y1="97.5" X2="220" Y2="97.5"/>
+                <TextBlock Style="{StaticResource SchemLabelText}" Canvas.Left="222" Canvas.Top="148" FontSize="10">3</TextBlock>
+                <Line X1="240" Y1="162.5" X2="220" Y2="162.5"/>
+                <TextBlock Style="{StaticResource SchemLabelText}" Canvas.Left="222" Canvas.Top="213" FontSize="10">4</TextBlock>
+                <Line X1="240" Y1="227.5" X2="220" Y2="227.5"/>
+
+                <Rectangle Canvas.Left="82" Canvas.Top="35" Width="40" Height="60"/>
+                <Rectangle Canvas.Left="121" Canvas.Top="164" Width="60" Height="40"/>
+                <Polyline Points="0,20 35,0 35,40 0,20" Canvas.Left="40" Canvas.Top="170"/>
+                <Path Data="M 0,228 100,228 100,200 75,200"/>
+                <Line X1="75" Y1="180" X2="122" Y2="180"/>
+                <Path Data="M 220,227.5 150,227.5 150,204"/>
+                <Path Data="M 40,190 20,190 20,42.5 45,42.5"/>
+                <Path Data="M -1,0 L 20,0 A 1,1 180 0 1 20,20 L 0,20 L 0,0" Canvas.Left="45" Canvas.Top="38" StrokeThickness="2"/>
+                <Line X1="75" Y1="47.5" X2="82.5" Y2="47.5"/>
+                <Rectangle Width="60" Height="40" Canvas.Left="35" Canvas.Top="114"/>
+                <Path Data="M 0,97.5 45,97.5 45,115"/>
+                <Path Data="M 65,115 65,80 35,80 35,53.5 45,53.5"/>
+                <Line X1="65" Y1="80" X2="75" Y2="80"/>
+                <Ellipse Canvas.Left="61" Canvas.Top="76"/>
+                <Ellipse Width="10" Height="10" Stroke="{StaticResource SchemNetColor}" StrokeThickness="2.5" Fill="{x:Null}" Canvas.Left="74" Canvas.Top="75"/>
+                <symbols:NPNTransistor Canvas.Left="121" Canvas.Top="28"/>
+                <symbols:NPNTransistor Canvas.Left="160" Canvas.Top="56"/>
+                <Line X1="161" Y1="68" X2="161" Y2="77.25"/>
+                <Path Data="M 0,32.5 25,32.5 25,20 161,20 161,29"/>
+                <Ellipse Canvas.Left="157" Canvas.Top="72"/>
+                <symbols:Resistor Canvas.Left="156" Canvas.Top="80">
+                    <symbols:Resistor.RenderTransform>
+                        <ScaleTransform ScaleX="0.5" ScaleY="0.5"/>
+                    </symbols:Resistor.RenderTransform>
+                </symbols:Resistor>
+                <Path Data="M 220,32.5 200,32.5 200,56"/>
+                <Path Data="M 220,97.5 200,97.5 200,94"/>
+                <Path Data="M 200,97.5 200,107 160.375,107"/>
+                <Ellipse Canvas.Left="196" Canvas.Top="93.5"/>
+                <Path Data="M 94,135 200,135 200,162.5 220,162.5"/>
+
+                <TextBlock Canvas.Left="66" Canvas.Top="171">+</TextBlock>
+                <TextBlock Canvas.Left="68" Canvas.Top="191">-</TextBlock>
+                <TextBlock Canvas.Left="38" Canvas.Top="116">Ipk</TextBlock>
+                <TextBlock Canvas.Left="79" Canvas.Top="127">Ct</TextBlock>
+                <TextBlock Canvas.Left="126" Canvas.Top="169">
+                    <Run>1.25v Ref</Run>
+                    <LineBreak/>
+                    <Run>Regulator</Run>
+                </TextBlock>
+                <TextBlock Canvas.Left="5" Canvas.Top="208">FB</TextBlock>
+                <TextBlock Canvas.Left="2" Canvas.Top="151" FontSize="10">Vcc</TextBlock>
+            </Canvas>
+            <!--#endregion-->
+
+            <TextBlock Canvas.Left="65" Canvas.Top="194">Rsc</TextBlock>
+            <TextBlock Canvas.Left="65" Canvas.Top="217" MinWidth="50" HorizontalAlignment="Left" Style="{StaticResource SchemTextBlock}">
+                <Run Text="{Binding Path=Model.Result.SenseResistorD.RoundedValue, Mode=OneWay}"/>
+                <Run
+                    Text="{Binding
+                        Path=Model.Result.SenseResistorD.Prefix,
+                        Converter={StaticResource metricConvert},
+                        Mode=OneWay,
+                        ConverterParameter=Model.Result.SenseResistorD.Prefix
+                    }"
+                />
+                <Run>Ω</Run>
+            </TextBlock>
+            <TextBlock Canvas.Left="60" Canvas.Top="282" MinWidth="50">
+                100F
+            </TextBlock>
+            <TextBlock Canvas.Left="128" Canvas.Top="341">R2</TextBlock>
+            <TextBlock Canvas.Left="60" Canvas.Top="387">R1</TextBlock>
+            <TextBox Canvas.Left="64" Canvas.Top="366" HorizontalAlignment="Right" Text="{Binding Path=Model.InputVars.FBResistor1D.Value}"/>
+            <TextBlock Canvas.Left="129" Canvas.Top="385" Style="{StaticResource SchemTextBlock}">
+                <Run Text="{Binding Path=Model.Result.FBResistor2D.RoundedValue, Mode=OneWay}"/>
+                <Run
+                    Text="{Binding
+                        Path=Model.Result.FBResistor2D.Prefix,
+                        Converter={StaticResource metricConvert},
+                        Mode=OneWay,
+                        ConverterParameter=Model.Result.FBResistor2D.Prefix
+                    }"
+                />
+                <Run>Ω</Run>
+            </TextBlock>
+            <TextBlock Canvas.Left="495" Canvas.Top="378">Co</TextBlock>
+            <TextBlock Canvas.Left="495" Canvas.Top="398" HorizontalAlignment="Left" Style="{StaticResource SchemTextBlock}">
+                <Run Text="{Binding Path=Model.Result.OutputCapacitorD.RoundedValue, Mode=OneWay}"/>
+                <Run
+                    Text="{Binding
+                        Path=Model.Result.OutputCapacitorD.Prefix,
+                        Converter={StaticResource metricConvert},
+                        Mode=OneWay,
+                        ConverterParameter=Model.Result.OutputCapacitorD.Prefix
+                    }"
+                />
+                <Run>F</Run>
+            </TextBlock>
+            <TextBox Canvas.Left="497" Canvas.Top="239" Text="{Binding Path=Model.InputVars.SelectedDiode.PartNumber}"/>
+            <TextBox Canvas.Left="497" Canvas.Top="260" Text="{Binding Path=Model.InputVars.SelectedDiode.ForwardVoltageD.Value}"/>
+            <TextBlock Canvas.Left="430" Canvas.Top="261">Ct</TextBlock>
+            <TextBlock Canvas.Left="430" Canvas.Top="282" HorizontalAlignment="Left" Style="{StaticResource SchemTextBlock}">
+                <Run Text="{Binding Path=Model.Result.TimingCapacitorD.RoundedValue, Mode=OneWay}"/>
+                <Run
+                    Text="{Binding
+                        Path=Model.Result.TimingCapacitorD.Prefix,
+                        Converter={StaticResource metricConvert},
+                        Mode=OneWay,
+                        ConverterParameter=Model.Result.TimingCapacitorD.Prefix
+                    }"
+                />
+                <Run>F</Run>
+            </TextBlock>
+            <TextBlock Canvas.Left="433" Canvas.Top="192">L</TextBlock>
+            <TextBlock Canvas.Left="419" Canvas.Top="213" HorizontalAlignment="Right" Style="{StaticResource SchemTextBlock}">
+                <Run Text="{Binding Path=Model.Result.MainInductorD.RoundedValue, Mode=OneWay}"/>
+                <Run
+                    Text="{Binding
+                        Path=Model.Result.MainInductorD.Prefix,
+                        Converter={StaticResource metricConvert},
+                        Mode=OneWay,
+                        ConverterParameter=Model.Result.MainInductorD.Prefix
+                    }"
+                />
+                <Run>H</Run>
+            </TextBlock>
+            <TextBlock Canvas.Left="4" Canvas.Top="197">Vin</TextBlock>
+            <TextBox Canvas.Left="4" Canvas.Top="218" Text="{Binding Path=Model.InputVars.InputVoltageNominalD.Value}">
+                <TextBox.ContextMenu>
+                    <ContextMenu>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="50"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Column="0" Grid.Row="0">Min</TextBlock>
+                            <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding Path=Model.InputVars.InputVoltageMinD.Value}"/>
+                            <TextBlock Grid.Column="0" Grid.Row="1">Max</TextBlock>
+                            <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Path=Model.InputVars.InputVoltageMaxD.Value}"/>
+                        </Grid>
+                    </ContextMenu>
+                </TextBox.ContextMenu>
+            </TextBox>
+            <TextBlock Canvas.Left="497" Canvas.Top="318">Vout</TextBlock>
+            <TextBox Canvas.Left="497" Canvas.Top="339" Text="{Binding Path=Model.InputVars.OutputVoltageNominalD.Value}">
+                <TextBox.ContextMenu>
+                    <ContextMenu>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="50"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Column="0" Grid.Row="0">Min</TextBlock>
+                            <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding Path=Model.InputVars.OutputVoltageMinD.Value}"/>
+                            <TextBlock Grid.Column="0" Grid.Row="1">Max</TextBlock>
+                            <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Path=Model.InputVars.OutputVoltageMaxD.Value}"/>
+                        </Grid>
+                    </ContextMenu>
+                </TextBox.ContextMenu>
+            </TextBox>
+            <Button Command="{Binding Path=CalcCmd}" Canvas.Left="250" Canvas.Bottom="0" Padding="20,5">Calc</Button>
+        </Canvas>
+
+        <Border Grid.Column="1" Grid.Row="1">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="25"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource SchemText}">Desired Values</TextBlock>
+                <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource SchemLabelText}">Input Voltage</TextBlock>
+                <TextBox Grid.Row="1" Grid.Column="1" MinWidth="50" Text="{Binding Path=Model.InputVars.InputVoltageNominalD.Value}"/>
+                <ComboBox
+                    Grid.Row="1"
+                    Grid.Column="2"
+                    ItemsSource="{Binding Source={conv:EnumMarkupConverter {x:Type metric:Prefix}}}"
+                    SelectedItem="{Binding Path=Model.InputVars.InputVoltageNominalD.Prefix}"
+                />
+                
+                <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource SchemLabelText}">Output Voltage</TextBlock>
+                <TextBox Grid.Row="2" Grid.Column="1" MinWidth="50" Text="{Binding Path=Model.InputVars.OutputVoltageNominalD.Value}"/>
+                <ComboBox
+                    Grid.Row="2"
+                    Grid.Column="2"
+                    ItemsSource="{Binding Source={conv:EnumMarkupConverter {x:Type metric:Prefix}}}"
+                    SelectedItem="{Binding Path=Model.InputVars.OutputVoltageNominalD.Prefix}"
+                />
+                
+                <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource SchemLabelText}">Output Load</TextBlock>
+                <TextBox Grid.Row="3" Grid.Column="1" MinWidth="50" Text="{Binding Path=Model.InputVars.OutputCurrentD.Value}"/>
+                <ComboBox
+                    Grid.Row="3"
+                    Grid.Column="2"
+                    ItemsSource="{Binding Source={conv:EnumMarkupConverter {x:Type metric:Prefix}}}"
+                    SelectedItem="{Binding Path=Model.InputVars.OutputCurrentD.Prefix}"
+                />
+                
+                <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource SchemLabelText}">Switching Frequency</TextBlock>
+                <TextBox Grid.Row="4" Grid.Column="1" MinWidth="50" Text="{Binding Path=Model.InputVars.DesiredSwFrequencyD.Value}"/>
+                <ComboBox
+                    Grid.Row="4"
+                    Grid.Column="2"
+                    ItemsSource="{Binding Source={conv:EnumMarkupConverter {x:Type metric:Prefix}}}"
+                    SelectedItem="{Binding Path=Model.InputVars.DesiredSwFrequencyD.Prefix}"
+                />
+                
+                <TextBlock Grid.Row="5" Grid.Column="0" Style="{StaticResource SchemLabelText}">Output Ripple</TextBlock>
+                <TextBox Grid.Row="5" Grid.Column="1" MinWidth="50" Text="{Binding Path=Model.InputVars.OutputVoltageRippleD.Value}"/>
+                <ComboBox
+                    Grid.Row="5"
+                    Grid.Column="2"
+                    ItemsSource="{Binding Source={conv:EnumMarkupConverter {x:Type metric:Prefix}}}"
+                    SelectedItem="{Binding Path=Model.InputVars.OutputVoltageRippleD.Prefix}"
+                />
+                
+                <TextBlock Grid.Row="6" Grid.Column="0" Style="{StaticResource SchemLabelText}">Voltage Tolerance</TextBlock>
+                <TextBox Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2" MinWidth="50" Text="{Binding Path=DefaultVoltageTolerance}"/>
+
+                <TextBlock Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource SchemText}">Component Values</TextBlock>
+
+                <TextBlock Grid.Row="9" Grid.Column="0" Style="{StaticResource SchemLabelText}">Switch Sat. Voltage</TextBlock>
+                <TextBox Grid.Row="9" Grid.Column="1" MinWidth="50" Text="{Binding Path=Model.InputVars.SwitchSaturationVoltageD.Value}"/>
+                <ComboBox
+                    Grid.Row="9"
+                    Grid.Column="2"
+                    ItemsSource="{Binding Source={conv:EnumMarkupConverter {x:Type metric:Prefix}}}"
+                    SelectedItem="{Binding Path=Model.InputVars.SwitchSaturationVoltageD.Prefix}"
+                />
+
+                <TextBlock Grid.Row="10" Grid.Column="0" Style="{StaticResource SchemLabelText}">Diode Forward Voltage</TextBlock>
+                <TextBox Grid.Row="10" Grid.Column="1" MinWidth="50" Text="{Binding Path=Model.InputVars.SelectedDiode.ForwardVoltageD.Value}"/>
+                <ComboBox
+                    Grid.Row="10"
+                    Grid.Column="2"
+                    ItemsSource="{Binding Source={conv:EnumMarkupConverter {x:Type metric:Prefix}}}"
+                    SelectedItem="{Binding Path=Model.InputVars.SelectedDiode.ForwardVoltageD.Prefix}"
+                />
+
+                <TextBlock Grid.Row="11" Grid.Column="0" Style="{StaticResource SchemLabelText}">FB Resistor 1</TextBlock>
+                <TextBox Grid.Row="11" Grid.Column="1" MinWidth="50" Text="{Binding Path=Model.InputVars.FBResistor1D.Value}"/>
+                <ComboBox
+                    Grid.Row="11"
+                    Grid.Column="2"
+                    ItemsSource="{Binding Source={conv:EnumMarkupConverter {x:Type metric:Prefix}}}"
+                    SelectedItem="{Binding Path=Model.InputVars.FBResistor1D.Prefix}"
+                />
+
+                <Expander Grid.Row="13" Header="Results">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+
+                    </Grid>
+                </Expander>
             </Grid>
         </Border>
     </Grid>

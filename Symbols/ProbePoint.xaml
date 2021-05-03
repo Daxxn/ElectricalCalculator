@@ -8,7 +8,7 @@
              d:DesignHeight="30" d:DesignWidth="10">
     <UserControl.Resources>
         <Style TargetType="Line">
-            <Setter Property="Stroke" Value="{StaticResource SchemMainShape}"/>
+            <Setter Property="Stroke" Value="{StaticResource SchemNetColor}"/>
             <Setter Property="StrokeEndLineCap" Value="Round"/>
             <Setter Property="StrokeStartLineCap" Value="Round"/>
             <Setter Property="StrokeThickness" Value="2.5"/>
@@ -20,6 +20,6 @@
         Height="Auto"
     >
         <Line X1="5" Y1="0" X2="5" Y2="20" StrokeStartLineCap="Flat"/>
-        <Ellipse Width="10" Height="10" Canvas.Left="0" Canvas.Top="20" Fill="{StaticResource SchemHighlShape}"/>
+        <Ellipse Width="10" Height="10" Canvas.Left="0" Canvas.Top="20" Fill="{StaticResource SchemNetColor}"/>
     </Canvas>
 </UserControl>
